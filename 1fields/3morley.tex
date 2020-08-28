@@ -1,0 +1,679 @@
+\section{Morley Rank}
+
+We begin by looking at $1$-types, 
+as done in \linkto{infinite_infinite_classes1}{the example} 
+with infinite infinite equivalence classes.
+
+\begin{prop}[Classification of $1$-types on a model of $\ACF_p$]
+    Let $\NN$ be an \linkto{om_sat_elem_ext_of_models}{
+        $\om$-saturated extension of $\MM$}, 
+    a $\Si_\RNG$-model of $\ACF_p$.
+    \linkto{elems_of_stone_space_are_types_of_elements}{
+        Any element of the Stone space $S_1(\eldiag(\Si_\RNG,\MM))$
+        is of the form}
+        $\subintp{\nothing,1}{\NN}{\tp}(a)$.
+    There are two cases for what the types over $\MM$ can be:
+    \begin{itemize}
+        \item $a$ is in the image of $\MM$; 
+            equivalently the type is an isolated point.
+        \item $a$ is not in the image of $\MM$;
+            equivalently its type is the unique non-isolated type.
+    \end{itemize}
+\end{prop}
+\begin{proof}
+    The first part is covered in 
+    \linkto{type_of_an_element_from_the_model}{the lemma}.
+
+    For the second part suppose $a$ is not in the image of $\MM$.
+    It is not isolated by the first part.
+    Note that for any $p \in \MM[x] \setminus {0}$, 
+    $\io(p)(a) \ne 0$ because $\MM$ is algebraically closed. 
+    (If $\io(p)(a) = 0$ then we can keep factoring roots of the polynomial
+    from $\MM$ to find one that corresponds to $a$.)
+    We show that any $b$ not in the image gives rise to the same type as $a$.
+
+    Let $\phi \in \tp(a)$.
+    As \linkto{ACF_has_quantifier_elimination}{
+        $\ACF_p$ has quantifier elimination}
+    we have \linkto{quant_elim_for_types}{equivalently}
+    $\phi \in \qftp(a)$.
+    Then \linkto{disjunctive_normal_form}{by the disjunctive normal form} 
+    for formulas in $\Si_\RNG$ we have that 
+    \[ 
+        \NN \model{\Si_\RNG} \forall v, \phi(v) 
+        \IFF \bigor{i \in I}{} 
+        \brkt{\bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0}
+    \]
+    Thus there exists $i \in I$ such that 
+    \[ 
+        \NN \model{\Si_\RNG} \forall v, \phi(v) \iff
+        \bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
+    \]
+    If $J_{i0}$ contains a non-zero polynomial $p_{ij}$ then we would have a 
+    contradiction by the above remark.
+    Thus 
+    \[ 
+        \NN \model{\Si_\RNG} \forall v, \phi(v) \iff
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
+    \]
+    Suppose for a contradiction
+    that $\phi$ is not in $\tp(b)$, 
+    in which case $\NN \nodel{\Si_\RNG} \phi(b)$
+    and $\NN \model{\Si_\RNG} \bigor{j \in J_{i1}}{} q_{ij}(b) = 0$.
+    Hence either $\NN \model{\Si_\RNG} \bot$, which is a contradiction,
+    or $\NN \model{\Si_\RNG} q_{ij}(b) = 0$ for some $j \in J_{i1}$.
+    By the above remark $q_{ij}$ must therefore be the zero polynomial,
+    which also leads to a contradiction as 
+    \[ 
+        \NN \model{\Si_\RNG} q_{ij}(a) \ne 0
+    \]
+    Hence $\tp(a) = \tp(b)$.
+\end{proof}
+
+
+\subsection{Dimension}
+In this section we will define Model-theoretic dimension
+and see how it aligns with transcendence degree and other geometric notions.
+\begin{dfn}[Algebraic, algebraic closure]
+    Let $\MM$ be a $\Si$-structure and let $D$ be a subset of $\MM$
+    (often \linkto{strongly_minimal}{strongly minimal}).
+    Let $A$ be a subset of $D$, 
+    $a \in \MM$ is algebraic over $A$ if $a$ belongs to a finite 
+    $\Si(A)$-definable set .
+    Define the algebraic closure of $A$ over $D$ to be
+    \[\acl_{\Si,D}(A) := \set{a \in D \st a \text{ is algebraic over } A}\]
+    We drop the subscripts $\Si$ and $D$ when it is sufficiently obvious.
+\end{dfn}
+
+\begin{lem}[Some definable sets]
+    \link{some_definable_sets}
+    Let $\MM$ be a $\Si$-structure and let $B,C \subs \MM$ be $\Si$-definable
+    set (i.e. $\Si(\nothing)$-definable).
+    Let $\phi(x)$ be a $\Si$-formula with $n$ free variables.
+    For $b \in B^n$, let $\psi(x,b)$ be a $\Si(B)$-formula 
+    with $m$ free variables ($\psi(x,y)$
+    is a $\Si$-formula with $n+m$ free variables).
+
+    Then the following sets are definable by a $\Si$-formula:
+    \begin{itemize}
+        \item The intersection of $B$ and $C$, the union of $B$ and $C$ and
+            the complement of $B$.
+        \item The set of $b \in B^n$ that satisfy $\phi(x)$:
+            \[\set{b \in B^n \st \MM \model{\Si} \phi(b)}\]
+        \item The elements $b \in \MM^n$ such that $\psi(x,b)$ defines a set of 
+            at most $k$ elements.
+        \item The elements of $\MM^n$ such that $\psi(x,b)$ defines a set of 
+            at least $k$ elements.
+        \item The elements of $\MM^n$ such that $\psi(x,b)$ defines a set of 
+            cardinality $k$.
+            \[\set{b \in \MM^n \st \abs{\psi(\MM,b)} = k}\]
+            and even $\set{b \in B^n \st \abs{\psi(\MM,b)} = k}$ by 
+            taking the intersection of two definable sets.
+    \end{itemize}
+    We will become lazier when dealing with definable sets as we gain an idea 
+    of what should and should not be definable.
+\end{lem}
+\begin{proof}
+    \begin{itemize}
+        \item This is clear.
+        \item 
+        Since $B$ is $\Si$-definable we can take $\chi(x)$ as the 
+        $\Si$-formula defining $B$
+        and consider the $\Si$-formula 
+        \[\phi(x_1,\dots,x_n) \AND \bigand{i = 1}{n} \chi(x_i)\]
+        Clearly this defines $\set{b \in B^n \st \MM \model{\Si} \phi(b)}$.
+        \item 
+        To make $\set{b \in \MM^n \st \abs{\psi(\MM,b)} \leq k}$
+        we take the $\Si$-formula $\chi(x)$:
+        \[
+            \chi(x) = \bigforall{i = 1}{k + 1} x_i,
+            \bigand{i = 1}{k + 1} \psi(x_i,y) \to \bigor{i \ne j}{x_i = x_j}
+        \]
+        where potentially $x_i$ represents $m$ variables, which we can 
+        quantify over as it is finite.
+        \item 
+        To make $\set{b \in \MM^n \st k \leq \abs{\psi(\MM,b)}}$
+        we take the $\Si$-formula $\chi(x)$:
+        \[
+            \chi(x) = \bigexists{i = 1}{k} x_i, {x_i \ne x_j}
+        \]
+    \end{itemize}
+\end{proof}
+
+\begin{dfn}[Minimal, strongly minimal \cite{marker}]
+    \link{strongly_minimal}
+    Let $\MM$ be a $\Si$-structure.
+    Let $D$ be an infinite $\Si(\MM)$-definable subset of $\MM^n$.
+    $D$ is minimal in $\MM$ if any $\Si(\MM)$-definable subset of $D$
+    if finite or cofinite.
+    $D$ is strongly minimal if it is minimal in 
+    $\NN$ for any elementary extension $\NN$ of $\MM$.
+    A $\Si$-theory $T$ is strongly minimal if any $\Si$-model of $T$
+    is strongly minimal 
+    (note that any $\Si$-structure is definable by the formula $v = v$).
+\end{dfn}
+
+\begin{prop}[Algebraic closure is a \linkto{pregeometry_dfn}{pregeometry}]
+    \link{acl_d_is_pregeometry}
+    Let $\MM$ be a $\Si$-structure. 
+    Let $D$ be a minimal subset of $\MM$.
+    Then $(D,\acl_{\Si,D})$ is a pregeometry.
+\end{prop}
+\begin{proof}\cite{fandom0}
+    The signature we work in will always be $\Si$ and the 
+    strongly minimal subset will always be $D$ so we drop the subscript here.
+    Preserves order: 
+    \emph{if $A \subs B \subs D$ then $\acl(A) \subs \acl(B)$.}
+    Let $a \in \acl(A)$. 
+    Then there exists a finite $\Si(A)$-definable set containing $a$.
+    Any $\Si(A)$-formula is naturally a $\Si(B)$-formula thus $a \in \acl(B)$.
+
+    Idempotence: \emph{for any $A \subs D$, $\acl(A) = \acl(\acl(A))$.}
+    \begin{forward}
+        We first show that for any subset $A \subs D$, $A \subs \acl(A)$.
+        Let $a \in A$ then $a = x$ is a $\Si(A)$-formula that is defines a 
+        finite set. 
+        Thus $a \in \acl(A)$.
+        Directly we have the corollary $\acl(A) \subs \acl(\acl(A))$.
+    \end{forward}
+
+    \begin{backward}
+        We show that $\acl(\acl(A)) \subs \acl(A)$.
+        Let $a \in \acl(\acl(A))$.
+        Then there exists $\phi(x,v) = \phi(x,v_0,\dots,v_n)$ a $\Si$-formula 
+        and $b_0,\dots, b_n \in \acl(A)$ such that $\phi(x,b)$
+        defines a finite subset of $\MM$ containing $a$.
+        Let $k$ be the finite cardinality of $\phi(\MM,b)$.
+        \linkto{some_definable_sets}{There exists a $\Si$-formula $\psi(v)$} 
+        that defines the set 
+        $\set{b \in B \st \abs{\phi(\MM,b)} \leq n}$
+        \[
+            \phi'(x,v) := \phi(x,v) \AND \psi(v)
+        \]
+        We have that $a \in \phi(\MM,b) = \phi'(\MM,b)$
+        and for any $c \in \MM^n$, $\phi'(\MM,c)$ is finite.
+    
+        For each $b_i$ appearing in $b$
+        there exists a $\Si(A)$-formula $\psi_i(v_i)$ such that 
+        $b_i \in \psi_i(\MM)$ and this definable set is finite.
+        Define the $\Si(A)$-formula
+        \[
+            \phi''(x) := \bigexists{i = 1}{n} v_i,
+            \phi'(x,v_0,\dots,v_n) \AND \bigand{i = 1}{n} \psi_i(v_i)
+        \]
+        Then $a \in \phi''(\MM)$ by taking the $v_i$ to be $b_i$ and 
+        \begin{align*}
+            d \in \phi''(\MM) 
+            &\implies \exists c \in \MM^n, \MM \model{\Si}\phi'(d,c) 
+            \text{ and for each $i$,} \MM \model{\Si}\psi_i(c_i)\\
+            &\implies \text{there exist for each $i$ } c_i \in \psi_i(\MM),
+            \MM \model{\Si}\phi'(d,c) \\
+            &\implies d \in 
+            \bigcup_{i = 0}^n \bigcup_{c_i \in \psi_i(\MM)} \phi'(\MM,c)
+        \end{align*}
+        The last expression is a finite union of finite sets which is finite.
+        Hence $\phi''(\MM)$ is finite and $a \in \acl(A)$
+    \end{backward}
+    
+    Finite character: \emph{if $A \subs D$ and $a \in \acl(A)$ then 
+    there exists a finite subset $F \subs A$ such that $a \in \acl(F)$.}
+    Take the $\Si(A)$-formula defining the finite set containing $a$.
+    Pick out the (finitely many) constant symbols from $A$, 
+    forming a finite subset $F \subs A$.
+    Then $a \in \acl(F)$.
+
+    Exchange: \emph{if $A \subs D$ and $a,b \in D$ such that 
+    $a \in \acl(A,b)$ (shorthand for $A,\set{a}$)
+    then $a \in \acl(A)$ or $b \in \acl(A,a)$.}
+    Since $a \in \acl(A,b)$ there exists a $\Si(A)$-formula $\phi(v,w)$ such 
+    that $a \in \phi(\MM,b)$ and $\phi(\MM,b)$ is finite - 
+    say it has cardinality $n$ 
+    (if $b$ does not appear in the formula then we immediately have 
+    $a \in \acl(A)$).
+    \linkto{some_definable_sets}{There exists a $\Si(A)$-formula} $\psi(w)$
+    defining the set
+    \[\psi(\MM) = \set{b' \in D \st n = \abs{\phi(\MM,b')}}\]
+    As $\psi(\MM) \subs D$ and $D$ is minimal, 
+    $\psi(\MM)$ is finite or cofinite.
+    If it is finite then $b \in \psi(\MM)$ and so 
+    $b \in \acl(A) \linkto{acl_d_is_pregeometry}{\subs} \acl(A,a)$.
+
+    If it is $\psi(\MM)$ then consider the $\Si(A)$-formula 
+    $\phi(v,w) \AND \psi(w)$.
+    For each $a' \in D$ let $X(a')$ be the subset of $D$ defined by 
+    $\phi(a',w) \AND \psi(w)$.
+    Consider $b \in X(a)$, and case on whether it is finite or cofinite.
+    If it is finite then $b \in \acl(A,a)$ as $\phi(a,w) \AND \psi(w)$
+    is a $\Si(A)$-formula defining a finite set.
+
+    If $X(a)$ is cofinite then let $m = \abs{D \setminus X(a)} \in \N$.
+    \linkto{some_definable_sets}{There exists a $\Si(A)$-formula} $\chi(v)$
+    defining the set
+    \[\chi(\MM) = \set{a' \in D \st m = \abs{D \setminus X(a')}}\]
+    If $\chi(\MM)$ is finite then $a \in \chi(\MM)$ and so $a \in \acl(A)$.
+    If $\chi(\MM)$ is confinite then there exist $n + 1$ distinct elements 
+    $a_i \in \chi(\MM)$ since $D$ is infinite by definition.
+    Take the (finite) intersection of the cofinite $X(a_i)$,
+    producing a non-empty (infinite) set.
+    Take 
+    \[b' \in \bigcap_{i = 1}^{n+1} X(a_i) = 
+    \bigcap_{i = 1}^{n+1} \phi(a_i,\MM) \cap \psi(\MM)\] 
+    Then for each $i$, $\MM \model{\Si} \phi(a_i,b')$, 
+    hence $n + 1 \leq \abs{\phi(\MM,b')}$.
+    However $\MM \model{\Si} \psi(b')$ implies $n = \abs{\phi(\MM,b')}$,
+    a contradiction.
+\end{proof}
+
+The definition of \linkto{dimension_dfn}{dimension} 
+    for pregeometries thus carries through for 
+    subsets of $D$.
+\begin{dfn}
+    Let $\MM$ be a $\Si$-structure and let $X \subs D \subs \M$,
+    where $D$ is minimal.
+    We write $\dim_{\Si,D}(X)$ to mean the 
+    \linkto{dimension_dfn}{dimension} 
+    of $X$ in the pregeometry $(D,\acl_{\Si,D})$.
+    We call this the $\Si$-dimension of $X$ in $D$.
+\end{dfn}
+
+\begin{lem}[$\acl$ preserves dimension]
+    \link{acl_preserves_dimension}
+    Let $\MM$ be a $\Si$-structure and let $X \subs D \subs \M$,
+    where $D$ is minimal. 
+    Then $\dim_{\Si,D}(X) = \dim_{\Si,D}(\acl_{\Si,D}(X))$.
+\end{lem}
+\begin{proof}
+    Let $S \subs X$ be a basis of $X$. 
+    Then it is an independent subset of $X \subs \acl(X)$ such that 
+    \[\acl(X) \subs \acl(S) 
+    \quad \text{ and by \linkto{acl_d_is_pregeometry}{idempotence} } \quad
+    \acl(\acl(X)) \subs \acl(X) \subs \acl(S)\]
+    Hence $S$ is a basis for $\acl(X)$.
+\end{proof}
+
+\subsection{The theory of algebrically closed fields is strongly minimal}
+\begin{dfn}[Strongly minimal theory]
+    A $\Si$-theory $T$ is (strongly) minimal if any $\Si$-model 
+    of $T$ is (strongly) minimal.
+\end{dfn}
+
+\begin{lem}[Disjunctive normal form of definable sets]
+    \link{dnf_for_definable_sets}
+    Let $K$ be an algebraically closed field.
+    Any definable set in $K^n$ can be written in the form 
+    \[\bigcup_{i \in S}\brkt{V_i \cap U_i}\]
+    where $V_i$ is a variety and $U_i$ is the complement of a variety in $K^n$.
+\end{lem}
+\begin{proof}
+    Let $X$ be a definable set:
+    \[X = \set{a \in K^m \st K \model{\Si_\RNG} \phi(a,b)}\]
+    where $b \in K^n$ and 
+    $\phi$ is some $\Si_\RNG$-formula with $n+m$ free variables.
+    Then by \linkto{ACF_has_quantifier_elimination}{quantifier elimination in 
+    $\ACF$}
+    we have a quantifier free $\Si_\RNG$-formula $\psi$ such that 
+    \[X = \set{a \in K^m \st K \model{\Si_\RNG} \psi(a,b)}\]
+    We can find the `disjunctive normal form' of $\psi$ as 
+    \linkto{disjunctive_normal_form}{it is quantifier free}.
+    Hence for $a \in K^m$
+    \begin{align*}
+        &a \in X\\
+        &\iff \bigor{i \in I}{} 
+        \brkt{\bigand{j \in J_{i0}}{} p_{ij}(a,b) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(a,b) \ne 0}\\
+        &\iff a \in \bigcup_{i \in I}
+        \brkt{\bigcap_{j \in J_{i0}} \V_K(p_{ij}(x,b)) \cap 
+        \bigcap_{j \in J_{i1}} K^m \setminus \V_K(q_{ij}(x,b))}\\
+    \end{align*}
+\end{proof}
+
+\begin{lem}[Non-trivial vanishings are finite]
+    \link{vanishing_finite_or_cofinite}
+    If $K$ is a field and $S \subs K[x]$
+    then $\V_K(S)$ is finite or $S = \set{0}$.
+    In particular $\V_K(S)$ is either finite or cofinite in $K$.
+\end{lem}
+\begin{proof}
+    If $\V(f)$ is finite we are done.
+    If $\V(f)$ is infinite
+    then each $f \in S$ has infinitely many distinct roots
+    so $f = 0$ by the division algorithm.
+    
+    In particular, if $S = \set{0}$ then $\V(S)$ is $K$ and it is cofinite.
+\end{proof}
+
+\begin{prop}
+    \link{ACF_strong_min}
+    $\ACF$ is strongly minimal.
+\end{prop}
+\begin{proof}
+    Let $K$ be an algebraically closed field.
+    
+    Let $D \subs K$ be definable.
+    Any elementary extension of $K$ is also algebraically closed so 
+    without loss of generality we only need to show minimality rather than 
+    strong minimality.
+    Then \linkto{dnf_for_definable_sets}{there exist 
+    $p_{ij}(x,b),q_{ij}(x,b) \in K[x]$} 
+    (note that the polynomials are in only one variable) such that 
+        \[D = \bigcup_{i \in I}
+        \brkt{\bigcap_{j \in J_{i0}} \V_K(p_{ij}(x,b)) \cap 
+        \bigcap_{j \in J_{i1}} K \setminus \V_K(q_{ij}(x,b))}\]
+    Which is a finite union and intersection of 
+    \linkto{vanishing_finite_or_cofinite}{finite and cofinite sets},
+    which is finite or cofinite.
+    Hence $D$ is finite or cofinite and $\ACF$ is strongly minimal.
+\end{proof}
+
+\subsection{Dimension and transcendence degree}
+
+Our first aim is to show that our definition of algebraic closure 
+aligns with the usual notion of algebraic closure of fields.
+\begin{lem}
+    \link{adjoining_elements_is_adding_constant_symbols}
+    If $K$ is a field and $A$ is a subset of an extension field then
+    $\term{\Si(K(A))} = \term{\Si(K,A)}$ and
+    $\form{\Si(K(A))} = \form{\Si(K,A)}$.
+    ($K(A)$ is the minimal subfield of the extension containing 
+    $A$ and the image of $K$)
+\end{lem}
+\begin{proof}
+    %?
+\end{proof}
+
+\begin{lem}[Formulas defining finite sets and polynomials]
+    \link{formulas_defining_finite_sets_give_poly}
+    Suppose $K$ is an algebraically closed field, $S$ is a set of constant
+    symbols and 
+    $\phi$ is a $\Si_\RNG(K,S)$-formula with exactly $1$ free variable.
+    If $\phi$ defines a finite set containing $a \in K(S)$ 
+    then there exists a non-zero polynomial $p \in K(S)[x]$ such that 
+    $p(a) = 0$.
+\end{lem}
+\begin{proof}
+    First take the \linkto{disjunctive_normal_form}{
+        disjunctive normal form of $\phi$}
+    \[K(S) \model{\Si(K,S)} \forall v, \phi \IFF \bigor{i \in I}{} 
+        \brkt{\bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0}\]
+    where $\Si(K,S)$-terms $p_{ij},q_{ij}$ are naturally 
+    \linkto{adjoining_elements_is_adding_constant_symbols}{$\Si(K(S))$-terms} 
+    and thus polynomials in $K(S)[x]$.
+    We see that there is some $i \in I$ such that 
+    \[K(S) \model{\Si_\RNG(K,S)} 
+        \bigand{j \in J_{i0}}{} p_{ij}(a) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(a) \ne 0
+    \]
+    The set defined by $\bigand{j \in J_{i0}}{} p_{ij}(v) = 0$ in $K(S)$
+    is $\V_{K(S)}(\set{p_{ij} \st j \in J_{i0}})$,
+    hence is \linkto{vanishing_finite_or_cofinite}{either finite
+    (there exists a non-zero polynomial) 
+    or all of $K(S)$ (all polynomials are zero)}.
+    In the first case we obtain a non-zero polynomial $p \in K(S)[x]$ 
+    such that $p(a) = 0$ and we are done.
+
+    Assume for a contradiction the second case holds.
+    For each $j \in J_{i1}$ 
+    consider the set defined by $q_{ij}(v) \ne 0$ in $K(S)$,
+    which is \linkto{vanishing_finite_or_cofinite}{cofinite or empty}.
+    If it is empty then it is not satisfied by $a$ which is a contradiction.
+    Hence 
+    \[
+        \bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
+    \]
+    defines a cofinite subset of $\phi(K(S))$, and so $\phi(K(S))$ is 
+    \linkto{card_of_alg_closed_fields}{infinite}, a contradiction.
+\end{proof}
+
+%? Do we use this?
+\begin{prop}[Algebraic closure in $\ACF$ is an field theoretic 
+    algebraic closure]
+    Let $K \to M$ be a field extension with $M$ algebraically closed, 
+    then as \linkto{ACF_strong_min}{$\ACF$ is strongly minimal} 
+    we have that $M$ is strongly minimal.
+    Consider a subset $A \subs M$.
+    Then $\acl_{\Si(K),M}(A)$ is an algebraic closure of $K(A)$.
+\end{prop}
+\begin{proof}
+    We write $\acl$ instead of $\acl_{\Si(K),M}$.
+    We must show that $\acl(A)$ is a field that contains $K(A)$, 
+    is algebraically closed and is an algebraic extension of 
+    $K(A)$.
+
+    To show that it is a field we only show closure for addition and leave
+    the rest as an exercise. 
+    Let $a, b \in \acl(A)$.
+    Then there exist $\Si(K,A)$-formulas $\phi_a,\phi_b$ that define 
+    finite subsets of $M$ containing $a$ and $b$ respectively.
+    Then their sum is in the finite set defined by the formula with one free
+    variable $z$:
+    \[
+        \exists x, \exists y, \phi_a(x) \AND \phi_b(y) \AND z = x + y
+    \]
+
+    It contains $K(A)$ if and only if it contains $A$ and the image of $K$.
+    It contians $K$ since for any element $k \in K$ we can take the 
+    $\Si(K,A)$-formula $x = k$. 
+    Similarly for $A$.
+
+    To show that it is algebraically closed let 
+    $p \in \acl(A)[x]$ be a polynomial.
+    Then we write $p$ out in terms of its coefficients $a_i \in \acl(A)$
+    \[p = \sum_{i = 1}^m a_i x^i\]
+    Each coefficient is in a finite subset of $M$
+    defined by a $\Si(K,A)$-formula $\phi_i$.
+    The formula with free variable $x$
+    \[
+        \bigexists{i = 1}{m} v_i, \bigand{i = 1}{m} \phi_i(v_i) \AND 
+        \sum_{i = 1}^m v_i x^i
+    \]
+    defines the set of roots of $p$ in $M$.
+    Since $M$ is algebraically closed this is all the roots and since
+    $p$ only has finitely many roots it is finite.
+    Hence all the roots of $p$ are in $\acl(A)$.
+
+    To show that it is an algebraic extension of $K(A)$ we take $a \in \acl(A)$
+    and obtain a formula defining a finite subset of $M$ containing $a$.
+    Thus 
+    \linkto{formulas_defining_finite_sets_give_poly}{there exists a polynomial}
+    $p \in K(A)[x]$ with $a$ as a root, and so $a$ is algebraic over $K(A)$.
+\end{proof}
+
+%?Now we look at the connection between dimension and transcendence degree.
+
+\begin{prop}[Transcendence degree is dimension]
+    Let $K \to L$ be a field extension.
+    Suppose $S \subs L$ and 
+    $M$ is an algebraically closed field extension of $L$.
+    We consider the pregeometry $(M,\acl_{\Si_\RNG(K),M})$.
+    \begin{enumerate}
+        \item $S$ is algebraically independent over $K$ if and only if 
+            $S$ is independent in the pregeometry.
+        \item $K(S) \to L$ is an algebraic extension if and only if $S$ 
+            spans $L$ in the pregeometry.
+        \item $S$ is a transcendence basis for the extension $K \to L$ 
+            if and only if 
+            $S$ is a basis for $L$ in the pregeometry.
+        \item Transcendence degree is the same thing as dimension:
+            \[\tdeg(K \to K(S)) = \dim_{\Si(K),M}(L)\]
+    \end{enumerate}
+\end{prop}
+\begin{proof}~
+    We will write $\acl$ to mean $\acl_{\Si_\RNG(K),M}$.
+    \begin{enumerate}
+        \item \begin{forward}
+            Let $a \in S$ and suppose for a contradiction that 
+            $a \in \acl(S \setminus \set{a})$.
+            Then there exists a $\Si_\RNG(K,S \setminus \set{a})$-formula $\phi$
+            defining a finite subset of $\M$ containing $a$.
+            Then \linkto{formulas_defining_finite_sets_give_poly}{
+                there exists a non-zero polynomial} 
+            $p \in K(S \setminus \set{a})[x]$ such that 
+            $p(a) = 0$.
+            This contradicts algebraic independence of $S$.
+        \end{forward}
+
+        \begin{backward}
+            Suppose $p \in K[x_0,\dots,x_n]$ with distinct $s_0,\dots,s_n \in S$
+            such that $p(s_0,\dots,s_n) = 0$.
+            Then we have a polynomial in one variable
+            \[p(x_0,s_1,\dots,s_n) \in K(S \setminus \set{s_0})[x_0]\]
+            with $s_0$ as a root.
+            Call $\phi(x_0)$ 
+            the \linkto{adjoining_elements_is_adding_constant_symbols}{
+                $\Si_\RNG(K,S \setminus \set{s_0})$}-formula 
+            `$p(x_0,s_1,\dots,s_n) = 0$'.
+            Since 
+            \linkto{vanishing_finite_or_cofinite}{
+                non-zero polynomials have finitely many roots} $\phi(M)$
+            is finite or $p = 0$; since $s_0$ is a root, 
+            \[M \model{\Si_\RNG (K,S \setminus \set{s_0})} \phi(s_0)\]
+            and so if it is finite then $s_0 \in \acl(S \setminus \set{s_0})$,
+            contradicting pregeometrical independence.
+            Hence $p = 0$ and so $S$ is algebraically independent.
+        \end{backward}
+        \item \begin{forward}
+            By \linkto{acl_d_is_pregeometry}{idempotence} of $\acl$, 
+            for $S$ to be spanning in the pregeometry 
+            it suffices to show that $L \subs \acl(S)$ 
+            (take $\acl$ of both sides).
+            Let $a \in L$.
+            Since $K(S) \to L$ is an algebraic extension 
+            there exists a non-zero polynomial 
+            $p \in K(S)[x]$ such that $p(a) = 0$.
+            The \linkto{adjoining_elements_is_adding_constant_symbols}{
+                $\Si_\RNG(K,S)$}-formula `$p = 0$',
+            defines a finite set containing $a$.
+        \end{forward}
+        
+        \begin{backward}
+            Let $a \in L$.
+            We want to show that $a$ is algebraic over $K(S)$
+            Since $S$ spans $L$
+            \[a \in L \subs \acl(L) \subs \acl(S)\]
+            and so there exists a $\Si(K,S)$-formula defining a finite set 
+            containing $a$.
+            \linkto{formulas_defining_finite_sets_give_poly}{Hence there exists
+            a non-zero polynomial} $p \in K(S)[x]$ with $a$ as a root.
+            Hence the extension is algebraic.
+        \end{backward}
+
+        \item
+            $S$ is a transcendence basis of the extension $K \to L$ 
+            \linkto{transcendence_bases_algebraic_extensions}{if and only if}
+            $K(S) \to L$ is algebraic and $S$ is 
+            algebraically independent over $K$.
+            By the last two parts this is if and only if $S$ is independent 
+            and spanning $L$ in the pregeometry, 
+            which is if and only if $S$ is pregeometrical basis for $L$.
+        
+        \item This is clear.
+    \end{enumerate}
+\end{proof}
+
+\subsection{Morley degree}
+\begin{prop}[Strong minimality in terms of Morley rank and degree]
+    Let $X$ be a definable subset of $\MM$, a $\Si$-structure.
+    Then $X$ is strongly minimal if and only if $\MR{}{X} = \MD{X} = 1$.
+\end{prop}
+\begin{proof}
+    \begin{forward}
+        Suppose $X$ is strongly minimal.
+        Then $X$ is infinite 
+        \linkto{basic_facts_morley_rank_of_dfnbl_set}{hence} $1 \leq \MR{}{X}$.
+        Let $\M$ be an 
+        \linkto{om_sat_elem_ext_of_models}{$\om$-saturated extension of $\MM$}.
+        If $2 \leq \MR{}{X}$ then there would be infinitely many 
+        disjoint $\Si(\M)$ definable subsets of $X$ of Morley rank $1$
+        (hence they are infinite).
+        By strong minimality the only 
+        $\Si(\M)$-definable subsets of $X$ are finite or cofinite.
+        Thus these subsets must all be cofinite
+        and so any two will intersect, a contradiction.
+        Thus $1 = \MR{}{X}$.
+
+        Since $\MR{}{X} = 1 \in \ord$ we have that $\MD{X} \in \N_{>0}$.
+        Again if we have two disjoint 
+        $\Si(\M)$-definable subsets of $X$ of Morley rank $1$ 
+        we have a contradiction, hence $\MD{X} \leq 1$ and so $\MD{X} = 1$.
+    \end{forward}
+
+    \begin{backward}
+        Suppose $X$ has Morley rank and degree $1$.
+        Let $\NN$ be an elementary extension of $\MM$. 
+        Let $A \subs X$ be a $\Si(\NN)$-definable subset of $X$;
+        its complement is also $\Si(\NN)$-definable.
+        Suppose both are infinite then they both have Morley rank greater 
+        than or equal to $1$ and are disjoint,
+        thus $2 \leq \MD{}{X} = 1$, which is a contradiction.
+        Hence one is finite and the other cofinite.
+    \end{backward}
+\end{proof}
+
+\subsection{Krull dimension and Morley rank}
+We will show in this section that Krull dimension is the same thing as Morley
+rank.
+
+\begin{prop}[Morley rank of types and dimension]
+    Suppose $\M$ is strongly minimal. %?Theorem hypotheses might be wrong
+    Let $A \subs \M$ such that $\abs{\acl_{\Si(A),\M}(A)} < \abs{\M}$ 
+    and let $a \in \M^k$. Then 
+    \[\MR{}{\subintp{A}{\M}{\tp}(a)} = \dim_{\Si(A),\M}(\{a_1,\dots,a_k\})\]
+\end{prop}
+\begin{proof}
+    We work in the pregeometry $(\M,\acl_{\Si(A),\M})$ and write 
+    $\dim$ for $\dim_{\Si(A),\M}$ and $\acl$ for $\acl_{\Si(A),\M}$.
+    We also write $\MR{}{a}$ for $\MR{}{\subintp{A}{\M}{\tp}(a)}$
+    and $a$ for $\{a_1,\dots,a_k\}$.
+
+    Let us first show that without loss of generality 
+    $\{a_1,\dots,a_k\}$ is independent in the pregeometry.
+    Concretely, we prove by induction on $k$ that there exists an independent
+    subset $s \subs \set{a_1,\dots,a_k}$ such that 
+    \[\MR{}{s} = \MR{}{a} \quad \text{ and } \quad \dim(s) = \dim(a)\]
+    If $k = 0$ then it is okay as the empty set is trivially independent.
+    If $0 < k$ then we case on if $\set{a_1,\dots,a_k}$ is independent
+    or not.
+    If it is then we are done. 
+    Otherwise remove a dependent element $a_i$.
+    By the theorem on \linkto{morley_rank_of_extended_types}{Morley 
+        rank of extended types} we have that 
+    \[\MR{}{a \setminus \set{a_i}} = \MR{}{a}\]
+    Since \linkto{acl_preserves_dimension}{$\acl$ preserves dimension}
+    and $a_i$ is dependent
+    \[
+        \dim(a \setminus \set{a_i}) = \dim(\acl(a \setminus \set{a_i}))
+        = \dim(\acl(a)) = \dim(a)
+    \]
+    Hence by induction there is a subset $s \subs a \setminus \set{a_i} \subs a$
+    such that 
+    \[\MR{}{s} = \MR{}{a \setminus \set{a_i}} = \MR{}{a}
+    \text{ and } \dim(s) = \dim(a \setminus \set{a_i}) = \dim(a)\]
+    Hence $a$ can be replaced by an independent subset.
+
+    Now we show that for independent $a_1,\dots,a_k$, $\MR{}{a} = k$.
+    This will complete the proof since independent sets 
+    are bases for themselves, which implies $\dim(a) = k = \MR{}{a}$.
+    We prove this by induction on $k$.
+    If $k = 0$ then $\subintp{A}{\M}{\tp}(a)$ 
+    is just sentences satisfied by $\M$, 
+    which \linkto{definable_set}{by convension} each define the set 
+    $\set{\nothing}$. 
+    Hence everything in $\tp(a)$ has Morley rank $0$ and so $\MR{}{a} = 0$.
+
+    Suppose 
+    
+    %?Incomplete
+\end{proof}
+
+\begin{prop}[Morley rank is Krull dimension for algebraically closed fields]
+    Let $K$ be an algebraically closed field and $X \subs K^n$ a variety.
+    Then the Morley rank of $X$ is equal to the 
+    \linkto{dfn_krull_dimension}{Krull dimension} of $X$.
+\end{prop}
+\begin{proof}
+    
+\end{proof}
