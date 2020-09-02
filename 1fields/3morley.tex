@@ -1,84 +1,22 @@
-\section{Morley Rank}
+\section{Morley Rank in Algebraically Closed Fields and Dimension}
 
-We begin by looking at $1$-types, 
-as done in \linkto{infinite_infinite_classes1}{the example} 
-with infinite infinite equivalence classes.
-
-\begin{prop}[Classification of $1$-types on a model of $\ACF_p$]
-    Let $\NN$ be an \linkto{om_sat_elem_ext_of_models}{
-        $\om$-saturated extension of $\MM$}, 
-    a $\Si_\RNG$-model of $\ACF_p$.
-    \linkto{elems_of_stone_space_are_types_of_elements}{
-        Any element of the Stone space $S_1(\eldiag(\Si_\RNG,\MM))$
-        is of the form}
-        $\subintp{\nothing,1}{\NN}{\tp}(a)$.
-    There are two cases for what the types over $\MM$ can be:
-    \begin{itemize}
-        \item $a$ is in the image of $\MM$; 
-            equivalently the type is an isolated point.
-        \item $a$ is not in the image of $\MM$;
-            equivalently its type is the unique non-isolated type.
-    \end{itemize}
-\end{prop}
-\begin{proof}
-    The first part is covered in 
-    \linkto{type_of_an_element_from_the_model}{the lemma}.
-
-    For the second part suppose $a$ is not in the image of $\MM$.
-    It is not isolated by the first part.
-    Note that for any $p \in \MM[x] \setminus {0}$, 
-    $\io(p)(a) \ne 0$ because $\MM$ is algebraically closed. 
-    (If $\io(p)(a) = 0$ then we can keep factoring roots of the polynomial
-    from $\MM$ to find one that corresponds to $a$.)
-    We show that any $b$ not in the image gives rise to the same type as $a$.
-
-    Let $\phi \in \tp(a)$.
-    As \linkto{ACF_has_quantifier_elimination}{
-        $\ACF_p$ has quantifier elimination}
-    we have \linkto{quant_elim_for_types}{equivalently}
-    $\phi \in \qftp(a)$.
-    Then \linkto{disjunctive_normal_form}{by the disjunctive normal form} 
-    for formulas in $\Si_\RNG$ we have that 
-    \[ 
-        \NN \model{\Si_\RNG} \forall v, \phi(v) 
-        \IFF \bigor{i \in I}{} 
-        \brkt{\bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
-        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0}
-    \]
-    Thus there exists $i \in I$ such that 
-    \[ 
-        \NN \model{\Si_\RNG} \forall v, \phi(v) \iff
-        \bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
-        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
-    \]
-    If $J_{i0}$ contains a non-zero polynomial $p_{ij}$ then we would have a 
-    contradiction by the above remark.
-    Thus 
-    \[ 
-        \NN \model{\Si_\RNG} \forall v, \phi(v) \iff
-        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
-    \]
-    Suppose for a contradiction
-    that $\phi$ is not in $\tp(b)$, 
-    in which case $\NN \nodel{\Si_\RNG} \phi(b)$
-    and $\NN \model{\Si_\RNG} \bigor{j \in J_{i1}}{} q_{ij}(b) = 0$.
-    Hence either $\NN \model{\Si_\RNG} \bot$, which is a contradiction,
-    or $\NN \model{\Si_\RNG} q_{ij}(b) = 0$ for some $j \in J_{i1}$.
-    By the above remark $q_{ij}$ must therefore be the zero polynomial,
-    which also leads to a contradiction as 
-    \[ 
-        \NN \model{\Si_\RNG} q_{ij}(a) \ne 0
-    \]
-    Hence $\tp(a) = \tp(b)$.
-\end{proof}
-
+We work towards the result that Krull dimension for algebraically closed 
+fields is the same thing as Morley rank for varieties. 
+The idea is that Morley rank of a variety corresponds to the Morley rank of 
+types from elements of the variety, corresponds to model theoretic dimension,
+corresponds to transcendence degree, 
+which is the same thing as Krull dimension.
+Strong minimality will play an important role in defining 
+model theoretic algebraic closure,
+which is then used to define dimension.
 
 \subsection{Dimension}
-In this section we will define Model-theoretic dimension
-and see how it aligns with transcendence degree and other geometric notions.
+In this section we will set up the important definitions needed to 
+talk about dimension. 
+A prerequisite for this section is knowledge of the basic results for 
+\linkto{pregeometry_dfn}{pregeometries}, covered in the appendix.
 \begin{dfn}[Algebraic, algebraic closure]
-    Let $\MM$ be a $\Si$-structure and let $D$ be a subset of $\MM$
-    (often \linkto{strongly_minimal}{strongly minimal}).
+    Let $\MM$ be a $\Si$-structure and let $D$ be a subset of $\MM$.
     Let $A$ be a subset of $D$, 
     $a \in \MM$ is algebraic over $A$ if $a$ belongs to a finite 
     $\Si(A)$-definable set .
@@ -86,6 +24,59 @@ and see how it aligns with transcendence degree and other geometric notions.
     \[\acl_{\Si,D}(A) := \set{a \in D \st a \text{ is algebraic over } A}\]
     We drop the subscripts $\Si$ and $D$ when it is sufficiently obvious.
 \end{dfn}
+
+\begin{dfn}[Minimal, strongly minimal \cite{marker}]
+    \link{strongly_minimal}
+    Let $\MM$ be a $\Si$-structure.
+    Let $D$ be an infinite $\Si(\MM)$-definable subset of $\MM^n$.
+    $D$ is minimal in $\MM$ if any $\Si(\MM)$-definable subset of $D$
+    if finite or cofinite.
+    $D$ is strongly minimal if it is minimal in 
+    $\NN$ for any elementary extension $\NN$ of $\MM$.
+    A $\Si$-theory $T$ is strongly minimal if any $\Si$-model of $T$
+    is strongly minimal 
+    (note that any $\Si$-structure is definable by the formula $v = v$).
+\end{dfn}
+
+We have an equivalent definition of strong minimality, 
+which if you like you can skip.
+\begin{prop}[Strong minimality in terms of Morley rank and degree]
+    Let $X$ be a definable subset of $\MM$, a $\Si$-structure.
+    Then $X$ is strongly minimal if and only if $\MR{}{X} = \MD{X} = 1$.
+\end{prop}
+\begin{proof}
+    \begin{forward}
+        Suppose $X$ is strongly minimal.
+        Then $X$ is infinite 
+        \linkto{basic_facts_morley_rank_of_dfnbl_set}{hence} $1 \leq \MR{}{X}$.
+        Let $\M$ be an 
+        \linkto{om_sat_elem_ext_of_models}{$\om$-saturated extension of $\MM$}.
+        If $2 \leq \MR{}{X}$ then there would be infinitely many 
+        disjoint $\Si(\M)$ definable subsets of $X$ of Morley rank $1$
+        (hence they are infinite).
+        By strong minimality the only 
+        $\Si(\M)$-definable subsets of $X$ are finite or cofinite.
+        Thus these subsets must all be cofinite
+        and so any two will intersect, a contradiction.
+        Thus $1 = \MR{}{X}$.
+
+        Since $\MR{}{X} = 1 \in \ord$ we have that $\MD{X} \in \N_{>0}$.
+        Again if we have two disjoint 
+        $\Si(\M)$-definable subsets of $X$ of Morley rank $1$ 
+        we have a contradiction, hence $\MD{X} \leq 1$ and so $\MD{X} = 1$.
+    \end{forward}
+
+    \begin{backward}
+        Suppose $X$ has Morley rank and degree $1$.
+        Let $\NN$ be an elementary extension of $\MM$. 
+        Let $A \subs X$ be a $\Si(\NN)$-definable subset of $X$;
+        its complement is also $\Si(\NN)$-definable.
+        Suppose both are infinite then they both have Morley rank greater 
+        than or equal to $1$ and are disjoint,
+        thus $2 \leq \MD{}{X} = 1$, which is a contradiction.
+        Hence one is finite and the other cofinite.
+    \end{backward}
+\end{proof}
 
 \begin{lem}[Some definable sets]
     \link{some_definable_sets}
@@ -141,19 +132,6 @@ and see how it aligns with transcendence degree and other geometric notions.
         \]
     \end{itemize}
 \end{proof}
-
-\begin{dfn}[Minimal, strongly minimal \cite{marker}]
-    \link{strongly_minimal}
-    Let $\MM$ be a $\Si$-structure.
-    Let $D$ be an infinite $\Si(\MM)$-definable subset of $\MM^n$.
-    $D$ is minimal in $\MM$ if any $\Si(\MM)$-definable subset of $D$
-    if finite or cofinite.
-    $D$ is strongly minimal if it is minimal in 
-    $\NN$ for any elementary extension $\NN$ of $\MM$.
-    A $\Si$-theory $T$ is strongly minimal if any $\Si$-model of $T$
-    is strongly minimal 
-    (note that any $\Si$-structure is definable by the formula $v = v$).
-\end{dfn}
 
 \begin{prop}[Algebraic closure is a \linkto{pregeometry_dfn}{pregeometry}]
     \link{acl_d_is_pregeometry}
@@ -368,25 +346,12 @@ The definition of \linkto{dimension_dfn}{dimension}
 \end{proof}
 
 \subsection{Dimension and transcendence degree}
-
-Our first aim is to show that our definition of algebraic closure 
-aligns with the usual notion of algebraic closure of fields.
-\begin{lem}
-    \link{adjoining_elements_is_adding_constant_symbols}
-    If $K$ is a field and $A$ is a subset of an extension field then
-    $\term{\Si(K(A))} = \term{\Si(K,A)}$ and
-    $\form{\Si(K(A))} = \form{\Si(K,A)}$.
-    ($K(A)$ is the minimal subfield of the extension containing 
-    $A$ and the image of $K$)
-\end{lem}
-\begin{proof}
-    %?
-\end{proof}
+We show that dimension and transcendence degree are the same thing.
 
 \begin{lem}[Formulas defining finite sets and polynomials]
     \link{formulas_defining_finite_sets_give_poly}
-    Suppose $K$ is an algebraically closed field, $S$ is a set of constant
-    symbols and 
+    Suppose $K$ is an algebraically closed field, 
+    $S$ is a subset of an extension field.
     $\phi$ is a $\Si_\RNG(K,S)$-formula with exactly $1$ free variable.
     If $\phi$ defines a finite set containing $a \in K(S)$ 
     then there exists a non-zero polynomial $p \in K(S)[x]$ such that 
@@ -399,8 +364,7 @@ aligns with the usual notion of algebraic closure of fields.
         \brkt{\bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
         \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0}\]
     where $\Si(K,S)$-terms $p_{ij},q_{ij}$ are naturally 
-    \linkto{adjoining_elements_is_adding_constant_symbols}{$\Si(K(S))$-terms} 
-    and thus polynomials in $K(S)[x]$.
+    \linkto{terms_in_RNG_are_polynomials}{polynomials} in $K(S)[x]$.
     We see that there is some $i \in I$ such that 
     \[K(S) \model{\Si_\RNG(K,S)} 
         \bigand{j \in J_{i0}}{} p_{ij}(a) = 0 \AND 
@@ -428,7 +392,9 @@ aligns with the usual notion of algebraic closure of fields.
     \linkto{card_of_alg_closed_fields}{infinite}, a contradiction.
 \end{proof}
 
-%? Do we use this?
+A result that uses the previous lemma is that the usual algebraic closure
+for fields is indeed a special case of our definition of algebraic closure.
+This is included only because it is noteworthy and can be skipped.
 \begin{prop}[Algebraic closure in $\ACF$ is an field theoretic 
     algebraic closure]
     Let $K \to M$ be a field extension with $M$ algebraically closed, 
@@ -482,9 +448,8 @@ aligns with the usual notion of algebraic closure of fields.
     $p \in K(A)[x]$ with $a$ as a root, and so $a$ is algebraic over $K(A)$.
 \end{proof}
 
-%?Now we look at the connection between dimension and transcendence degree.
-
 \begin{prop}[Transcendence degree is dimension]
+    \link{trans_deg_is_dim}
     Let $K \to L$ be a field extension.
     Suppose $S \subs L$ and 
     $M$ is an algebraically closed field extension of $L$.
@@ -522,9 +487,13 @@ aligns with the usual notion of algebraic closure of fields.
             Then we have a polynomial in one variable
             \[p(x_0,s_1,\dots,s_n) \in K(S \setminus \set{s_0})[x_0]\]
             with $s_0$ as a root.
-            Call $\phi(x_0)$ 
-            the \linkto{adjoining_elements_is_adding_constant_symbols}{
-                $\Si_\RNG(K,S \setminus \set{s_0})$}-formula 
+            Elements of $K(S \setminus \set{s_0})$ can be written as 
+            polynomials over $K$ in variables from $S \setminus \set{s_0}$,
+            which are $\Si_\RNG(K,S \setminus \set{s_0})$-terms;
+            hence $p(x_0,s_1,\dots,s_n)$ is naturally a 
+            $\Si_\RNG(K,S \setminus \set{s_0})$-term
+            as well.
+            Call $\phi(x_0)$ the $\Si_\RNG(K,S \setminus \set{s_0})$-formula 
             `$p(x_0,s_1,\dots,s_n) = 0$'.
             Since 
             \linkto{vanishing_finite_or_cofinite}{
@@ -544,8 +513,9 @@ aligns with the usual notion of algebraic closure of fields.
             Since $K(S) \to L$ is an algebraic extension 
             there exists a non-zero polynomial 
             $p \in K(S)[x]$ such that $p(a) = 0$.
-            The \linkto{adjoining_elements_is_adding_constant_symbols}{
-                $\Si_\RNG(K,S)$}-formula `$p = 0$',
+            We write $p$ as a polynomial over $K$ in variables from $S$,
+            which is a $\Si_\RNG(K,S)$-term, 
+            and so the $\Si_\RNG(K,S)$-formula `$p = 0$'
             defines a finite set containing $a$.
         \end{forward}
         
@@ -574,48 +544,10 @@ aligns with the usual notion of algebraic closure of fields.
     \end{enumerate}
 \end{proof}
 
-\subsection{Morley degree}
-\begin{prop}[Strong minimality in terms of Morley rank and degree]
-    Let $X$ be a definable subset of $\MM$, a $\Si$-structure.
-    Then $X$ is strongly minimal if and only if $\MR{}{X} = \MD{X} = 1$.
-\end{prop}
-\begin{proof}
-    \begin{forward}
-        Suppose $X$ is strongly minimal.
-        Then $X$ is infinite 
-        \linkto{basic_facts_morley_rank_of_dfnbl_set}{hence} $1 \leq \MR{}{X}$.
-        Let $\M$ be an 
-        \linkto{om_sat_elem_ext_of_models}{$\om$-saturated extension of $\MM$}.
-        If $2 \leq \MR{}{X}$ then there would be infinitely many 
-        disjoint $\Si(\M)$ definable subsets of $X$ of Morley rank $1$
-        (hence they are infinite).
-        By strong minimality the only 
-        $\Si(\M)$-definable subsets of $X$ are finite or cofinite.
-        Thus these subsets must all be cofinite
-        and so any two will intersect, a contradiction.
-        Thus $1 = \MR{}{X}$.
-
-        Since $\MR{}{X} = 1 \in \ord$ we have that $\MD{X} \in \N_{>0}$.
-        Again if we have two disjoint 
-        $\Si(\M)$-definable subsets of $X$ of Morley rank $1$ 
-        we have a contradiction, hence $\MD{X} \leq 1$ and so $\MD{X} = 1$.
-    \end{forward}
-
-    \begin{backward}
-        Suppose $X$ has Morley rank and degree $1$.
-        Let $\NN$ be an elementary extension of $\MM$. 
-        Let $A \subs X$ be a $\Si(\NN)$-definable subset of $X$;
-        its complement is also $\Si(\NN)$-definable.
-        Suppose both are infinite then they both have Morley rank greater 
-        than or equal to $1$ and are disjoint,
-        thus $2 \leq \MD{}{X} = 1$, which is a contradiction.
-        Hence one is finite and the other cofinite.
-    \end{backward}
-\end{proof}
-
-\subsection{Krull dimension and Morley rank}
-We will show in this section that Krull dimension is the same thing as Morley
-rank.
+\subsection{Morley rank of types and dimension}
+This section is purely model theoretic.
+It allows us to connect our definition dimension together with Morley rank 
+for types of tuples.
 
 \begin{prop}[Projection and Morley rank]
     \link{proj_and_morley_rank}
@@ -664,30 +596,6 @@ rank.
     by the induction hypothesis we have $\al \leq \chi_i$ and the
     $\chi_i$ define disjoint subsets of $\phi(\M)$, 
     hence $\al+1 \leq \MR{}{\phi}$.
-\end{proof}
-
-\begin{lem}[Smallest rank representative of a type]
-    \link{smallest_rank_rep}
-    Suppose $\M$ is a $\ka$-saturated, strongly minimal $\Si$-structure.
-    Let $A \subs \M$ be such that $\abs{A} < \ka$.
-    Let $a \in \M^n$ and write $\tp(a)$ for $\subintp{A}{\M}{\tp}(a)$.
-    Then there exists of a rank representative $\phi$ of $\tp(a)$ such that 
-    there is no $\Si(A)$-formula $\psi$ satisfying 
-    \[\MR{}{\phi \AND \psi} = \MR{}{\phi \AND \NOT \psi} = \MR{}{\tp(a)}\]
-
-    The property of $\phi$ says it defines a `smallest' subset of $\M$ of 
-    that rank.
-\end{lem}
-\begin{proof}
-    Suppose no such $\phi$ exists, then starting with any rank representative 
-    $\phi_0$ and using maximality of $\tp(a)$
-    there exists $\psi_0 \in \tp(a)$ such that 
-    \[\MR{}{\phi_0 \AND \psi_0} = \MR{}{\phi_0 \AND \NOT \psi_0} = \al\]
-    We define $\phi_1$ as $\phi_0 \AND \psi_0$ and proceed by induction 
-    to create $\phi_i$ and $\psi_i$.
-    Now $\phi_i \AND \NOT \psi_i$ are infinitely 
-    many formulas with Morley rank $\al$ defining disjoint subsets of $\phi_0$,
-    so $\al + 1 \leq \MR{}{\phi_0}$, a contradiction.
 \end{proof}
 
 \begin{lem}[Morley rank of extended types \cite{marker}]
@@ -800,11 +708,58 @@ rank.
     However, $(c,d_1) \in \Phi(\M)$ so $\abs{\psi(c,\M)} = n$, a contradiction.
 \end{proof}
 
+\begin{lem}[Independent tuples have the same type \cite{marker}]
+    \link{independent_tuples_same_type}
+    Let $\MM$ be a $\Si$-structure with $A \subs D \subs \MM$,
+    where $D$ is minimal and $\Si(A)$-definable.
+    Let $a \in D^k$ and $b \in D^k$. 
+    If $\set{a_1,\dots,a_k}$ and $\set{b_1,\dots,b_k}$ are both 
+    independent in the pregeometry $(D,\acl_{\Si(A),D})$
+    then 
+    \[\subintp{A}{\MM}{\tp}(a) = \subintp{A}{\MM}{\tp}(b)\]
+\end{lem}
+\begin{proof}
+    We induct on $k \in \N$. 
+    We write $\tp$ for $\subintp{A}{\MM}{\tp}$.
+
+    For the base case $k = 0$ we note that empty tuples define the same type
+    \[{\tp}(a) = {\tp}(\nothing)= {\tp}(b)\]
+    More concretely this is equal to $\Theory_{\MM}(A)$.
+
+    Suppose it is true for $k$.
+    Let $\set{a_1,\dots,a_{k+1}}$ and $\set{b_1,\dots,b_{k+1}}$ be independent
+    in the pregeometry.
+    Then by induction $\tp(a_1,\dots,a_k) = \tp(b_1,\dots,b_k)$.
+    Let $\psi \in \tp(a_1,\dots,a_{k+1})$.
+    It suffices to show that $\psi \in \tp(b_1,\dots,b_{k+1})$.
+    Note that $a_k \in \psi(a_1,\dots,a_k, \MM) \cap D$, 
+    which is a \linkto{some_definable_sets}{
+        $\Si(A,a_1,\dots,a_k)$-definable subset} of $D$.
+    Since by assumption $\set{a_1,\dots,a_{k+1}}$ is independent 
+    this definable set must be infinite, 
+    and by minimality of $D$ its complement 
+    $\NOT \psi(a_1,\dots,a_k, \MM) \cap D$ is finite
+    with cardinality $n$, say.
+    
+    \linkto{some_definable_sets}{There exists a $\Si(A)$-formula} $\chi$
+    in free-variables $x_1,\dots,x_k$ defining the set of $c \in D^k$ such that
+    \[\abs{\NOT \psi(c,\MM) \cap D} = n\]
+    Since $\chi \in \tp(a_1,\dots,a_k) = \tp(b_1,\dots,b_k)$
+    implies $\abs{\NOT \psi(b_1,\dots,b_k,\MM) \cap D} = n$,
+    \[
+        b_{k+1} \notin \psi(b_1,\dots,b_k,\MM) \implies 
+        b_{k+1} \in \NOT \psi(b_1,\dots,b_k,\MM) \text{ finite} \implies 
+        b_{k+1} \text{ is dependent, contradiction}
+    \]
+    We have $b_{k+1} \in \psi(b_1,\dots,b_k,\MM)$ and so 
+    $\psi \in \tp(b_1,\dots,b_k)$.
+\end{proof}
+
 \begin{prop}[Morley rank of types and dimension]
-    Suppose $\M$ is strongly minimal and $\ka$-saturated. 
-    %?Theorem hypotheses wrong
-    Let $A \subs \M$ such that $\abs{\acl_{\Si(A),\M}(A)} < \abs{\M}$ 
-    and $\abs{A} < \ka$.
+    \link{morley_rank_of_types_is_dim}
+    Suppose $\M$ is strongly minimal and $\ka$-saturated.
+    Let $A \subs \M$ such that $\abs{A} < \ka$ and $\dim_{\Si(A),\M}(\M)$ is 
+    infinite.
     Let $a \in \M^k$. Then 
     \[\MR{}{\subintp{A}{\M}{\tp}(a)} = \dim_{\Si(A),\M}(\{a_1,\dots,a_k\})\]
 \end{prop}
@@ -864,8 +819,8 @@ rank.
     \]
     define disjoint subsets of $\phi(\M)$.
     We need to show that these formulas have Morley rank $k$.
-    Since \linkto{OHMYGODWHATTHEFUCK}{independent sets of the same length %?
-    have the same type}, for each $i \in \N$ 
+    Since \linkto{independent_tuples_same_type}{independent sets of the same 
+        length have the same type}, for each $i \in \N$ 
     \[\tp(a_1,\dots,a_{k+1}) = \tp(b_i,\dots,b_{i+k})\]
     In particular $\phi \in \tp(b_i,\dots,b_{i+k})$ and so 
     $\psi_i \in \tp(b_i,\dots,b_{i+k})$.
@@ -877,6 +832,7 @@ rank.
     \]
     Hence we have $k + 1 \leq \MR{}{\phi} = \MR{}{a}$.
 
+    %? Marker introduces om-saturated structure here. Why?
     Suppose for a contradiction that $k + 2 \leq \MR{}{\phi}$.
     Then we have for each $i \in \N$, $\Si(\M)$-formulas $\chi_i$
     of Morley rank $k + 1$ defining disjoint subset of $\phi(\M)$.
@@ -887,8 +843,8 @@ rank.
     \[\MR{}{c} = \MR{}{\chi_i} = k + 1 \text{ and } \chi_i \in \tp(c)\]
     Suppose for a contradiction that $c_1,\dots,c_{k+1}$ are independent in the 
     pregeometry.
-    Then as \linkto{OHMYGODWHATTHEFUCK}{independent sets of the same length %?
-        have the same type} we have $\tp(a) = \tp(c)$,
+    Then as \linkto{independent_tuples_same_type}{independent sets of the same 
+        length have the same type} we have $\tp(a) = \tp(c)$,
     which implies $\chi_i \in \tp(a)$ so $a \in \chi_i(\M)$, a contradiction.
     There is a \linkto{independence_and_span_basic}{strictly smaller subset}
     $B \subs \set{c_1,\dots,c{k+1}}$ 
@@ -901,11 +857,107 @@ rank.
     Hence $k + 1 = \MR{}{\phi} = \MR{}{a}$.
 \end{proof}
 
-\begin{prop}[Morley rank is Krull dimension for algebraically closed fields]
-    Let $K$ be an algebraically closed field and $X \subs K^n$ a variety.
-    Then the Morley rank of $X$ is equal to the 
-    \linkto{dfn_krull_dimension}{Krull dimension} of $X$.
+\subsection{Morley rank is Krull dimension}
+We are now ready to show that Morley rank is the same thing as Krull dimension.
+A prerequisite is the \linkto{transendence_deg_is_krull}{result} 
+in algebraic geometry that transcendence degree 
+is the same thing as Krull dimension.
+
+\begin{rmk}[Defining formula for Zariski closed sets]
+    \link{defining_formula_for_zariski_closed}
+    Let $K$ be an alebraically closed field and $V \subs K^n$ 
+    a Zariski closed set. 
+    Then it is \linkto{zariski_closed_sets_are_fin_gen}{a 
+        finitely generated vanishing} 
+    so there exists a finite $S_V \subs K[x_1,\dots,x_n]$ such that 
+    $V$ is defined by the $\Si(K)$-formula 
+    \[\bigand{p \in S_V}{} p = 0\]
+    where each polynomial is 
+    \linkto{terms_in_RNG_are_polynomials}{naturally a $\Si(K)$-term}.
+\end{rmk}
+
+\begin{prop}[Morley rank is Krull dimension for algebraically closed fields
+    \cite{marker}]
+    Let $K$ be an algebraically closed field and $V \subs K^n$ a variety.
+    Then the Morley rank of $V$ is equal to its 
+    \linkto{dfn_krull_dimension}{Krull dimension}.
 \end{prop}
 \begin{proof}
+    We write $\tp$ for $\subintp{K}{\M}{\tp}$.
+    We show by induction that for each $n \in \N$
+    if $\kdim(V) = n$
+    then $\MR{}{V} = n$.
+    Since \linkto{dfn_krull_dimension}{
+        Krull dimension is always finite} this is sufficient.
+    If $n = 0$ then \linkto{krull_dim_0}{$V$ is a singleton} 
+    hence \linkto{basic_facts_morley_rank_of_dfnbl_set}{$\MR{}{V} = 0$}.
+
+    Suppose $n > 0$ and $\kdim(V) = n$.
+    Let $\M$ be a 
+    \linkto{existence_of_monster}{$\ka$-saturated elementary extension} of $K$
+    for some cardinal $\ka$ strictly greater than $\abs{K}$.
+    We replace $K$ and $V$ with their images in $\M$ to make things simpler.
+    The variety $V$ is Zariski closed by definition and so it is 
+    \linkto{defining_formula_for_zariski_closed}{defined by a $\Si(K)$-formula}
+    \[\phi := \bigand{p \in S_V}{} p = 0\]
+    for some finite $S_V \subs K[x_1,\dots,x_n]$.
     
+    Note that since 
+    \linkto{formulas_rep_by_types}{formulas are represented by types} 
+    and $\ka$-saturation we have
+    \[
+        \MR{}{V} = \MR{}{\phi} = 
+        \max \set{\MR{}{q} \st \phi \in q \in S_n(\Theory_\M(K))}
+        = \max \set{\MR{}{\tp(a)} \st a \in \phi(\M)}
+    \]
+    Thus there exists $a \in \phi(\M)$ such that $\MR{}{\tp(a)} = \MR{}{V}$.
+    It suffices to show that $\MR{}{\tp(a)} = n$.
+
+    Let $I(a)$ denote the ideal in $K[x_1,\dots,x_n]$ 
+    of polyomials vanishing at $a$ 
+    (extending our previous definition of $I$ beyond $K^n$).
+    Then $V_a := \V_K(I(a))$ is Zariski closed and so it is 
+    \linkto{defining_formula_for_zariski_closed}{defined by a $\Si(K)$-formula}
+    \[\psi_a := \bigand{p \in S_{V_a}}{} p = 0\]
+    for some finite $S_{V_a} \subs K[x_1,\dots,x_n]$.
+    We first show that $V_a = V$.
+    To show that $V_a \subs V$, we take $b \in V_a$ and note that 
+    for each $p \in S$, $p(b) = 0$ by definition and so  
+    $b \in \phi(K) = V$.
+    Suppose for a contradiction $V_a \subset V$.
+    Then the $\kdim(V_a) < \kdim(V) = n$.
+    Hence by the induction hypothesis $\MR{}{V_a} < n$ 
+    and since $a \in \psi_a(\M)$
+    \begin{align*}
+        \MR{}{V} 
+        &= \MR{}{\tp(a)} \\
+        &\leq \max\set{\MR{}{\tp(b) \st b \in \psi_a(\M)}}\\
+        &= \max \set{\MR{}{q} \st \psi_a \in q \in S_n(\Theory_\M(K))}\\
+        &\linkto{formulas_rep_by_types}{=} \MR{}{\psi} \\
+        &= \MR{}{V_a} < n
+    \end{align*}
+    Hence by the induction hypothesis $V$ 
+    has Krull dimension strictly less than $n$, a contradiction.
+    Thus $V_a = V$.
+
+    Now we have that $K(a)$ is isomorphic to the function field $K(V)$:
+    \[
+        K(a_1,\dots,a_n) \iso %? what result are we using here?
+        K[x_1,\dots,x_n] / I(V_a) = 
+        K[x_1,\dots,x_n] / I(V) = K(V)
+    \]
+    As \linkto{transendence_deg_is_krull}{Krull dimension is 
+        transcendence degree, } 
+    $n = \kdim(V) = \tdeg(K \to K(V)) = \tdeg(K \to K(a))$. 
+    This in turn is the same as 
+    $\dim_{\Si_\RNG(K),\M}(\set{a_1,\dots,a_n})$
+    since \linkto{trans_deg_is_dim}{transcendence degree is dimension}.
+    Now \linkto{ACF_strong_min}{$\ACF$ is strongly minimal}
+    and $\dim_{\Si_\RNG(K),\M}(\M)$ is infinite %? Why?
+    thus \linkto{morley_rank_of_types_is_dim}{dimension 
+        corresponds to Morley rank of the type}
+    \[
+        k = \dim_{\Si_\RNG(K),\M}(\set{a_1,\dots,a_n}) 
+        = \MR{}{\tp(a)} = \MR{}{V}
+    \]
 \end{proof}

@@ -794,7 +794,7 @@ This subsection follows Marker's \cite{marker} material again.
     \[\MR{\MM}{\phi} = \MR{\Om}{\phi} = \MR{\NN}{\phi}\]
 \end{proof}
 
-\begin{prop}[Subset implies inequality of Morley rank]%/
+\begin{prop}[Subset implies inequality of Morley rank]%?
     \link{implication_subset_inequality}
     Let $\phi$ and $\psi$ be two $\Si(\MM)$-formulas
     and $\NN$ be an elementary extension of $\MM$.
@@ -975,6 +975,7 @@ For the general version see Proof Wiki \cite{wiki1}.
 \end{proof}
 
 \begin{dfn}[$\al$-minimality]
+    \link{al_minimality_dfn}
     Let $\M$ be an $\om$-saturated $\Si$-structure and $\al$ an ordinal.
     We say a $\Si(\M)$-formula $\phi$ is $\al$-minimal if 
     \[\MR{}{\phi} = \al \text{ and there does not exist } 
@@ -984,7 +985,9 @@ For the general version see Proof Wiki \cite{wiki1}.
 
 The following lemma gives us the existence of Morley degree,
 a way to specify how many disjoint subsets of a definable set we can produce.
-\begin{lem}[Morley degree \cite{marker}]
+This also gives us a way to split up any formula into $\al$-minimal formulas
+which are easier to work with.
+\begin{lem}[Morley degree decomposition \cite{marker}]
     \link{morley_degree_lem}
     Let $\M$ be an $\om$-saturated $\Si$-structure.
     Let $\phi$ be a $\Si(\M)$-formula.
@@ -1204,13 +1207,39 @@ since the formula itself defines a (trivially pairwise disjoint) subset.
     \]
 \end{dfn}
 
+\begin{lem}[$\al$-minimal rank representative of a type]
+    \link{smallest_rank_rep}
+    Suppose $\M$ is an $\om$-saturated strongly minimal $\Si$-structure,
+    $A \subs \M$ and $p \in S_n(\Theory_\M(A))$.
+    Let $\al = \MR{}{p}$.
+    Then there exists an $\al$-minimal rank representative $\phi$ of $p$.
+\end{lem}
+\begin{proof}
+    Suppose no such $\phi$ exists, then starting with any rank representative 
+    $\phi_0$ and using maximality of $p$
+    there exists $\psi_0 \in p$ such that 
+    \[\MR{}{\phi_0 \AND \psi_0} = \MR{}{\phi_0 \AND \NOT \psi_0} = \al\]
+    We define $\phi_1$ as $\phi_0 \AND \psi_0$ 
+    which by assumption is not $\al$-minimal and proceed by induction 
+    to create $\phi_i$ and $\psi_i$.
+    Now $\phi_i \AND \NOT \psi_i$ are infinitely 
+    many formulas with Morley rank $\al$ defining disjoint subsets of $\phi_0$,
+    so $\al + 1 \leq \MR{}{\phi_0}$, a contradiction.
+\end{proof}
+
+The following lemma tells us we can also go the other way.
+Given a formula we can find a type with equal Morley rank 
+containing the formula.
+This uses the Morley degree decomposition of a formula.
 \begin{lem}[Formulas are represented by types \cite{tent}]
     \link{formulas_rep_by_types}
-    Let $A \subs \M$, where $\M$ is an $\ka$-saturated $\Si$-structure 
-    and $\abs{A} < \M$.
+    Let $A \subs \M$, for $\M$ an $\om$-saturated $\Si$-structure.
     If $\phi$ is a $\Si(A)$-formula with $\MR{}{\phi} \in \ord$, 
     then there exists a type $p \in S_n(\Theory_\M(A))$ such that 
     $\MR{}{\phi} = \MR{}{p}$ and $\phi \in p$.
+
+    Hence 
+    \[\MR{}{\phi} = \max \set{\MR{}{q} \st \phi \in q \in S_n(\Theory_\M(A))}\]
 \end{lem}
 \begin{proof}
     We first show that this holds when $\phi$ is $\al$-minimal,
@@ -1269,6 +1298,8 @@ since the formula itself defines a (trivially pairwise disjoint) subset.
     $\MR{}{p} = \MR{}{\psi_1} = \al$.
     In fact $\phi \in p$ as well since $\psi_1(\M) \subs \phi(\M)$
     so we have found the type that we required.
+
+    The `hence' follows immediately.
 \end{proof}
 
 %? Where to put?

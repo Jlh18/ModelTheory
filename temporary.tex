@@ -884,7 +884,77 @@ saturation comes in the form of homogeneity.
     subsets of $D$.
 \end{rmk}
 
+We begin by looking at $1$-types, 
+as done in \linkto{infinite_infinite_classes1}{the example} 
+with infinite infinite equivalence classes.
 
+\begin{prop}[Classification of $1$-types on a model of $\ACF_p$]
+    Let $\NN$ be an \linkto{om_sat_elem_ext_of_models}{
+        $\om$-saturated extension of $\MM$}, 
+    a $\Si_\RNG$-model of $\ACF_p$.
+    \linkto{elems_of_stone_space_are_types_of_elements}{
+        Any element of the Stone space $S_1(\eldiag(\Si_\RNG,\MM))$
+        is of the form}
+        $\subintp{\nothing,1}{\NN}{\tp}(a)$.
+    There are two cases for what the types over $\MM$ can be:
+    \begin{itemize}
+        \item $a$ is in the image of $\MM$; 
+            equivalently the type is an isolated point.
+        \item $a$ is not in the image of $\MM$;
+            equivalently its type is the unique non-isolated type.
+    \end{itemize}
+\end{prop}
+\begin{proof}
+    The first part is covered in 
+    \linkto{type_of_an_element_from_the_model}{the lemma}.
+
+    For the second part suppose $a$ is not in the image of $\MM$.
+    It is not isolated by the first part.
+    Note that for any $p \in \MM[x] \setminus {0}$, 
+    $\io(p)(a) \ne 0$ because $\MM$ is algebraically closed. 
+    (If $\io(p)(a) = 0$ then we can keep factoring roots of the polynomial
+    from $\MM$ to find one that corresponds to $a$.)
+    We show that any $b$ not in the image gives rise to the same type as $a$.
+
+    Let $\phi \in \tp(a)$.
+    As \linkto{ACF_has_quantifier_elimination}{
+        $\ACF_p$ has quantifier elimination}
+    we have \linkto{quant_elim_for_types}{equivalently}
+    $\phi \in \qftp(a)$.
+    Then \linkto{disjunctive_normal_form}{by the disjunctive normal form} 
+    for formulas in $\Si_\RNG$ we have that 
+    \[ 
+        \NN \model{\Si_\RNG} \forall v, \phi(v) 
+        \IFF \bigor{i \in I}{} 
+        \brkt{\bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0}
+    \]
+    Thus there exists $i \in I$ such that 
+    \[ 
+        \NN \model{\Si_\RNG} \forall v, \phi(v) \iff
+        \bigand{j \in J_{i0}}{} p_{ij}(v) = 0 \AND 
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
+    \]
+    If $J_{i0}$ contains a non-zero polynomial $p_{ij}$ then we would have a 
+    contradiction by the above remark.
+    Thus 
+    \[ 
+        \NN \model{\Si_\RNG} \forall v, \phi(v) \iff
+        \bigand{j \in J_{i1}}{} q_{ij}(v) \ne 0
+    \]
+    Suppose for a contradiction
+    that $\phi$ is not in $\tp(b)$, 
+    in which case $\NN \nodel{\Si_\RNG} \phi(b)$
+    and $\NN \model{\Si_\RNG} \bigor{j \in J_{i1}}{} q_{ij}(b) = 0$.
+    Hence either $\NN \model{\Si_\RNG} \bot$, which is a contradiction,
+    or $\NN \model{\Si_\RNG} q_{ij}(b) = 0$ for some $j \in J_{i1}$.
+    By the above remark $q_{ij}$ must therefore be the zero polynomial,
+    which also leads to a contradiction as 
+    \[ 
+        \NN \model{\Si_\RNG} q_{ij}(a) \ne 0
+    \]
+    Hence $\tp(a) = \tp(b)$.
+\end{proof}
 
 \printbibliography
 
