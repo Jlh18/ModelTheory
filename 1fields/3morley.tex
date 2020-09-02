@@ -104,9 +104,9 @@ and see how it aligns with transcendence degree and other geometric notions.
             \[\set{b \in B^n \st \MM \model{\Si} \phi(b)}\]
         \item The elements $b \in \MM^n$ such that $\psi(x,b)$ defines a set of 
             at most $k$ elements.
-        \item The elements of $\MM^n$ such that $\psi(x,b)$ defines a set of 
+        \item The elements $b \in \MM^n$ such that $\psi(x,b)$ defines a set of 
             at least $k$ elements.
-        \item The elements of $\MM^n$ such that $\psi(x,b)$ defines a set of 
+        \item The elements $b \in \MM^n$ such that $\psi(x,b)$ defines a set of 
             cardinality $k$.
             \[\set{b \in \MM^n \st \abs{\psi(\MM,b)} = k}\]
             and even $\set{b \in B^n \st \abs{\psi(\MM,b)} = k}$ by 
@@ -617,17 +617,202 @@ aligns with the usual notion of algebraic closure of fields.
 We will show in this section that Krull dimension is the same thing as Morley
 rank.
 
+\begin{prop}[Projection and Morley rank]
+    \link{proj_and_morley_rank}
+    Suppose $\M$ is an $\om$-saturated $\Si$-structure.
+    Let $\phi$ be a $\Si(\M)$-formula and let $v$ be a variable symbol.
+    Then 
+    \[\MR{}{\exists v, \phi} \leq \MR{}{\phi}\]
+\end{prop}
+\begin{proof}
+    First we remove the case where $v$ is not a free variable of $\phi$ 
+    by noting that if this is the case then $\exists v, \phi$ and $\phi$ 
+    have the same number of free variables and so $a \in (\exists v, \phi)(\M)$
+    if and only if $\M \modelsi \exists v, \phi(a)$ if and only if 
+    $\M \modelsi \phi(a)$ if and only if $a \in \phi(\M)$.
+    \linkto{implication_subset_inequality}{Hence} 
+    they have the same Morley rank.
+
+    Then we induct on $\al \in \ord$ to show that 
+    $\al \leq \MR{}{\exists v, \phi}$ implies $\al \leq \MR{}{\phi}$.
+    We will not bother with the cases $- \infty$ and $\infty$ and the former
+    is trivial and the latter follows from the induction result.
+    If $0 \leq \MR{}{\exists v, \phi}$ then there exists $a \in \M^n$
+    such that $\M \modelsi \exists v, \phi(a,v)$. 
+    Hence there is $b \in \M$ such that 
+    $\M \modelsi \phi(a,b)$ and so $0 \leq \MR{}{\phi}$.
+
+    The non-zero limit ordinal case is trivial. 
+    Suppose $\al + 1 \leq \MR{}{\exists v, \phi}$.
+    Then there exist $\Si(\M)$-formulas $\psi_i$ defining disjoint subsets of 
+    $(\exists v, \phi) (\M)$ such that $\al \leq \MR{}{\psi_i}$.
+    Then take $\Si(\M)$-formulas $\chi_i$ to be $\psi_i \AND \phi$.\footnote{
+        It is important here that we notice $\psi_i \AND \phi$ and 
+        $\phi$ have the same number of free variables, and so we can say that 
+        $(\psi_i \AND \phi)(\M) \subs \phi(\M)$, which is not the case for 
+        if we just took $\psi_i$, since it is one free variable short.
+        (In general $\M^n \cap \M^{n+1} = \nothing$!)
+        }
+    If $a \in (\exists v, \phi)(\M)$ then 
+    $a \in (\exists v, \psi \AND \phi)(\M)$ and so 
+    \[
+        \psi_i(\M) \subs (\exists v, \phi)(\M) 
+        \subs (\exists v, \psi \AND \phi)(\M) \quad \implies \quad
+        \al \leq \MR{}{\psi_i} \linkto{implication_subset_inequality}{\leq} 
+        \MR{}{\exists v, \chi_i}
+    \]
+    by the induction hypothesis we have $\al \leq \chi_i$ and the
+    $\chi_i$ define disjoint subsets of $\phi(\M)$, 
+    hence $\al+1 \leq \MR{}{\phi}$.
+\end{proof}
+
+\begin{lem}[Smallest rank representative of a type]
+    \link{smallest_rank_rep}
+    Suppose $\M$ is a $\ka$-saturated, strongly minimal $\Si$-structure.
+    Let $A \subs \M$ be such that $\abs{A} < \ka$.
+    Let $a \in \M^n$ and write $\tp(a)$ for $\subintp{A}{\M}{\tp}(a)$.
+    Then there exists of a rank representative $\phi$ of $\tp(a)$ such that 
+    there is no $\Si(A)$-formula $\psi$ satisfying 
+    \[\MR{}{\phi \AND \psi} = \MR{}{\phi \AND \NOT \psi} = \MR{}{\tp(a)}\]
+
+    The property of $\phi$ says it defines a `smallest' subset of $\M$ of 
+    that rank.
+\end{lem}
+\begin{proof}
+    Suppose no such $\phi$ exists, then starting with any rank representative 
+    $\phi_0$ and using maximality of $\tp(a)$
+    there exists $\psi_0 \in \tp(a)$ such that 
+    \[\MR{}{\phi_0 \AND \psi_0} = \MR{}{\phi_0 \AND \NOT \psi_0} = \al\]
+    We define $\phi_1$ as $\phi_0 \AND \psi_0$ and proceed by induction 
+    to create $\phi_i$ and $\psi_i$.
+    Now $\phi_i \AND \NOT \psi_i$ are infinitely 
+    many formulas with Morley rank $\al$ defining disjoint subsets of $\phi_0$,
+    so $\al + 1 \leq \MR{}{\phi_0}$, a contradiction.
+\end{proof}
+
+\begin{lem}[Morley rank of extended types \cite{marker}]
+    \link{morley_rank_of_extended_types}
+    Suppose $\M$ is a $\ka$-saturated, strongly minimal $\Si$-structure.
+    Let $A \subs \M$ be such that $\abs{A} < \ka$.
+    Let $a \in \M^n$ and $b \in \M$.
+    Then 
+    \[\MR{}{\subintp{A}{\M}{\tp}(a)} \leq \MR{}{\subintp{A}{\M}{\tp}(a,b)}\]
+    Furthermore `if $b$ is dependent then removing it preserves Morley rank'
+    \[b \in \acl_{\Si(A),\M}(\set{a_1,\dots,a_n}) \implies 
+    \MR{}{\subintp{A}{\M}{\tp}(a)} = \MR{}{\subintp{A}{\M}{\tp}(a,b)}\]
+    This says we can reduce finite sets to subsets that are independent 
+    in the pregeometry whilst preserving Morley rank of the type.
+\end{lem}
+\begin{proof}
+    We write $\MR{}{\star}$ to mean $\MR{}{\subintp{A}{\M}{\tp}(\star)}$.
+    We use $x$ or $x_1,\dots,x_n$ to denote the variables corresponding to $a$
+    and use $v$ to denote the variable corresponding to $b$.
+
+    Let $\phi$ be a \linkto{morley_rank_for_types_dfn}{rank representative}
+    for $\tp(a,b)$.
+    Then $a \in (\exists v, \phi)(\M)$ and so $(\exists v, \phi) \in \tp(a)$.
+    Hence
+    \[
+        \MR{}{a} \leq \MR{}{\exists v, \phi} \linkto{proj_and_morley_rank}{\leq} 
+        \MR{}{\phi} \leq \MR{}{a,b}
+    \]
+
+    For the other inequality
+    it suffices to show by induction on $\al \in \ord$ that 
+    If $a \in \M^n$ and $b \in \M$.
+    Then `if $b$ is dependent' then 
+    \[\al \leq \MR{}{a,b} \implies \al \leq \MR{}{a}\]
+    For the base case we note that $a \in \phi(\M)$ for any rank representative 
+    $\phi$ of $\tp(a)$ and so $\phi(\M)$ is non-empty and 
+    \[0 \leq \MR{}{\phi} = \MR{}{a}\]
+    The non-zero limit ordinal case is trivial.
+
+    Suppose for the successor case $\al + 1 \leq \MR{}{a,b}$. 
+    Then $\al \leq \MR{}{a,b}$ and so by the induction 
+    hypothesis $\al \leq \MR{}{a}$.
+    \linkto{smallest_rank_rep}{There exists a `smallest' rank representative} 
+    $\phi(x)$ of $\tp(a)$ such that 
+    there is no $\Si(A)$-formula $\psi$ such that 
+    \[\MR{}{\phi \AND \psi} = \MR{}{\phi \AND \NOT \psi} = \al\]
+    Since $b \in \acl(a)$ we have a $\Si(A)$-formula $\psi(x,v)$ such that 
+    $b \in \psi(a,\M)$ and $\psi(a,\M)$ is finite with cardinality $n$.
+    Let $\abs{\psi(x,\M)} = n$ denote 
+    \linkto{some_definable_sets}{the formula} defining the set of $a' \in \M^n$
+    such that $\abs{\psi(a',\M)} = n$.
+    Then define the $\Si(A)$-formula
+    \[\Phi(x,v) := \phi(x) \AND \psi(x,v) \AND \abs{\psi(x,\M)} = n\]
+
+    Note that $\Phi \in \tp(a,b)$ and so 
+    $\al + 1 \leq \MR{}{a,b} \leq \MR{}{\Phi}$.
+    Thus for $i \in \N$ there exist formulas $\theta_i$ with rank at least
+    $\al$ defining disjoint subsets of $\Phi(\M)$.
+
+    We show that for each $m \in \N_{>0}$ 
+    \[\al \leq \MR{}{\bigand{i = 1}{m} \exists y, \theta_i}\]
+    We first show for each $i$ that $\al \leq \MR{}{\exists v, \theta_i}$,
+    covering the base case $m = 1$.
+    \linkto{formulas_rep_by_types}{There exist representative types},
+    element $c \in \M^n$ and $d \in \M$: $\theta_i \in \tp(c,d)$
+    and $\MR{}{\theta_i} = \MR{}{c,d}$.
+    If $d \in \acl(c)$ then by induction we have 
+    \[\al \leq \MR{}{c,d} 
+    \implies \al \leq \MR{}{c} \leq \MR{}{\exists v, \theta_i}\]
+    Indeed $d \in \acl(c)$ since 
+    $\theta_i(\M) \subs \Phi(\M)$ which says 
+    \[d \in \psi(c, \M) \text{ and } \abs{\psi(c,\M)} = n\]
+
+    Suppose it is true for $m$.
+    Write $\chi(x) := \bigand{i = 1}{m} \exists v, \theta_i$.
+    Then for each $i$, $(\exists v, \theta_i)(\M) \subs \phi(\M)$ implies 
+    $\chi(\M) \subs \phi(\M)$ and 
+    \[
+        \al \leq \MR{}{\chi} \leq \MR{}{\phi} = \al 
+        \implies \al = \MR{}{\chi} = \MR{}{\phi \AND \chi}
+    \]
+    We showed above that $\al \leq \exists y, \theta_m$.
+    Partition $(\exists y, \theta_m)(\M)$ into its intersection with 
+    $\chi(\M)$ and $\NOT \chi(\M)$.
+    Supposing for a contradiction 
+    \[\al \nleq \MR{}{\chi \AND \exists v, \theta_m}\]
+    we see that $\al \leq \MR{}{\exists y, \theta_m}$ is the 
+    \linkto{basic_facts_morley_rank_of_dfnbl_set}{maximum} of the two parts
+    which must be $\MR{}{\NOT \chi \AND \exists v, \theta_m}$.
+    Then 
+    \[
+        \al \leq \MR{}{\exists v, \theta_m \AND \NOT \chi} 
+        \leq \MR{}{\phi \AND \NOT \chi} \leq \MR{}{\phi} = \al 
+        \implies \al = \MR{}{\phi \AND \NOT \chi}
+    \]
+    This contradicts the property of $\phi$ being the 
+    `smallest' rank representative.
+
+    In particular we have shown, applying 
+    \linkto{compactness_for_types}{compactness},
+    that $\set{\exists v, \theta_i}$ is consistent and thus can be 
+    \linkto{extend_to_maximal_type_zorn}{extended} to 
+    an element of $S_n(\Theory_\M(A))$, which is realised by some $c \in \MM^n$ 
+    as it is $\ka$-saturated.
+    Thus we have for each $i$ that $\M \model{\Si(A)} \exists v, \theta_i(c,v)$,
+    giving us $d_i \in \M$ such that $\M \model{\Si(A)} \theta_i(c,d_i)$.
+    However the $\theta_i(c,\M)$ are disjoint subsets of 
+    $\Phi(c,\M) \subs \psi(c,\M)$ and so the $d_i$ must be
+    distinct elements of $\psi(c,\M)$ and so $\psi(c,\M)$ is infinite.
+    However, $(c,d_1) \in \Phi(\M)$ so $\abs{\psi(c,\M)} = n$, a contradiction.
+\end{proof}
+
 \begin{prop}[Morley rank of types and dimension]
-    Suppose $\M$ is strongly minimal. %?Theorem hypotheses might be wrong
+    Suppose $\M$ is strongly minimal and $\ka$-saturated. 
+    %?Theorem hypotheses wrong
     Let $A \subs \M$ such that $\abs{\acl_{\Si(A),\M}(A)} < \abs{\M}$ 
-    and let $a \in \M^k$. Then 
+    and $\abs{A} < \ka$.
+    Let $a \in \M^k$. Then 
     \[\MR{}{\subintp{A}{\M}{\tp}(a)} = \dim_{\Si(A),\M}(\{a_1,\dots,a_k\})\]
 \end{prop}
 \begin{proof}
     We work in the pregeometry $(\M,\acl_{\Si(A),\M})$ and write 
     $\dim$ for $\dim_{\Si(A),\M}$ and $\acl$ for $\acl_{\Si(A),\M}$.
-    We also write $\MR{}{a}$ for $\MR{}{\subintp{A}{\M}{\tp}(a)}$
-    and $a$ for $\{a_1,\dots,a_k\}$.
+    We also write $\MR{}{a}$ for $\MR{}{\subintp{A}{\M}{\tp}(a)}$ and
+    $\tp$ for $\subintp{A}{\M}{\tp}$.
 
     Let us first show that without loss of generality 
     $\{a_1,\dots,a_k\}$ is independent in the pregeometry.
@@ -659,14 +844,61 @@ rank.
     are bases for themselves, which implies $\dim(a) = k = \MR{}{a}$.
     We prove this by induction on $k$.
     If $k = 0$ then $\subintp{A}{\M}{\tp}(a)$ 
-    is just sentences satisfied by $\M$, 
+    consists of $\Si(A)$-sentences satisfied by $\M$, 
     which \linkto{definable_set}{by convension} each define the set 
     $\set{\nothing}$. 
-    Hence everything in $\tp(a)$ has Morley rank $0$ and so $\MR{}{a} = 0$.
+    Hence everything in $\tp(a)$ has 
+    \linkto{basic_facts_morley_rank_of_dfnbl_set}{Morley rank $0$} 
+    and so $\MR{}{a} = 0$.
 
-    Suppose 
-    
-    %?Incomplete
+    For the induction step suppose 
+    $a_1,\dots,a_{k+1}$ form an independent set in the 
+    pregeometry.
+    We first show that $k + 1 \leq \MR{}{a}$.
+    Let $\phi(x_1,\dots,x_{k+1})$ be a rank representative of $a$.
+    Since the dimension of $\M$ is infinite we can take a countably infinite 
+    subset of a basis $\set{b_i}_{i \in \N}$. 
+    Let the formulas 
+    \[
+        \psi_i := \phi \AND (x_1 = b_i)
+    \]
+    define disjoint subsets of $\phi(\M)$.
+    We need to show that these formulas have Morley rank $k$.
+    Since \linkto{OHMYGODWHATTHEFUCK}{independent sets of the same length %?
+    have the same type}, for each $i \in \N$ 
+    \[\tp(a_1,\dots,a_{k+1}) = \tp(b_i,\dots,b_{i+k})\]
+    In particular $\phi \in \tp(b_i,\dots,b_{i+k})$ and so 
+    $\psi_i \in \tp(b_i,\dots,b_{i+k})$.
+    Hence and by induction 
+    \[
+        k \leq \MR{}{b_i,\dots,b_{i+k-1}} 
+        \linkto{morley_rank_of_extended_types}{\leq} \MR{}{b_i,\dots,b_{i+k}}
+        \leq \MR{}{\psi_i}
+    \]
+    Hence we have $k + 1 \leq \MR{}{\phi} = \MR{}{a}$.
+
+    Suppose for a contradiction that $k + 2 \leq \MR{}{\phi}$.
+    Then we have for each $i \in \N$, $\Si(\M)$-formulas $\chi_i$
+    of Morley rank $k + 1$ defining disjoint subset of $\phi(\M)$.
+    As they are disjoint there exists an $i$ such that $a \notin \chi_i(\M)$.
+    We take $\tp(c) \in S_n(\Th_\M(A))$, 
+    a \linkto{formulas_rep_by_types}{type representing this $\chi_i$}
+    realised by some $c \in \M^{k+1}$ by $\ka$-saturation:
+    \[\MR{}{c} = \MR{}{\chi_i} = k + 1 \text{ and } \chi_i \in \tp(c)\]
+    Suppose for a contradiction that $c_1,\dots,c_{k+1}$ are independent in the 
+    pregeometry.
+    Then as \linkto{OHMYGODWHATTHEFUCK}{independent sets of the same length %?
+        have the same type} we have $\tp(a) = \tp(c)$,
+    which implies $\chi_i \in \tp(a)$ so $a \in \chi_i(\M)$, a contradiction.
+    There is a \linkto{independence_and_span_basic}{strictly smaller subset}
+    $B \subs \set{c_1,\dots,c{k+1}}$ 
+    that is a pregeometrical basis for $\set{c_1,\dots,c{k+1}}$.
+    This will satisfy $\MR{}{B} = \MR{}{c}$ (by induction using the lemma on 
+    \linkto{morley_rank_of_extended_types}{extended types}).
+    By the induction hypothesis, noting that $B$ is independent, we have
+    \[\MR{}{\chi_i} = \MR{}{c} = \MR{}{B} = \abs{B} < k + 1\]
+    which contradicts $\MR{}{\chi_i} = k + 1$.
+    Hence $k + 1 = \MR{}{\phi} = \MR{}{a}$.
 \end{proof}
 
 \begin{prop}[Morley rank is Krull dimension for algebraically closed fields]

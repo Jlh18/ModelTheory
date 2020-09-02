@@ -33,11 +33,11 @@ It follows the lecture notes by Prof. C. Ward Henson \cite{henson}.
 
 \begin{prop}[Independence and span]
     \link{independence_and_span_basic}
-    Let $(X,\cl)$ be a pregeometry and $U,V \subs X$.
+    Let $(X,\cl)$ be a pregeometry, $a \in X$ and $U,V \subs X$.
     \begin{enumerate}
         \item If $U$ is independent then any subset of $U$ is independent.
         \item If $U$ is independent and $a \notin \cl(U)$ then then 
-        $U \cup \set{a}$ is independent.
+            $U \cup \set{a}$ is independent.
         \item $U$ is independent if and only if every finite subset of $U$ is 
             independent.
         \item $U$ spans $V$ if and only if there exists a subset of 
@@ -47,6 +47,7 @@ It follows the lecture notes by Prof. C. Ward Henson \cite{henson}.
             if and only if $U$ is a minimally spanning subset of $V$, 
             i.e. for any independent $W \subs V$, $U \not\subset W$;
             for any spanning $W \subs V$, $W \not\subset U$.
+        \item Any independent subset $U$ is contained in a basis.
     \end{enumerate}
 \end{prop}
 \begin{proof}~
@@ -89,7 +90,7 @@ It follows the lecture notes by Prof. C. Ward Henson \cite{henson}.
             Let $C$ be a chain in the set. 
             Then $\bigcup C$ is a subset of $U$.
             It is independent because every finite subset of it is independent
-            by part $2$.
+            by part $3$.
         \end{forward}
         \item We show that $U$ is basis of $V$ if and only if it is a 
             maximally independent subset of $V$.
@@ -142,6 +143,12 @@ It follows the lecture notes by Prof. C. Ward Henson \cite{henson}.
                 and $U \setminus \set{a}$ spans $V$
                 which contradicts the minimality of $U$.
             \end{backward}
+        \item (Zorn) Consider 
+            $\set{V \subs X \st U \subs V \text{ and } V \text{ independent}}$.
+            This is non-empty as it contains $U$.
+            The union of any chain in it independent if and only if 
+            every finite subset of it is independent if and only if each 
+            set in it is independent by part $3$.
     \end{enumerate}
 \end{proof}
 

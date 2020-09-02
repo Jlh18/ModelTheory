@@ -794,37 +794,42 @@ This subsection follows Marker's \cite{marker} material again.
     \[\MR{\MM}{\phi} = \MR{\Om}{\phi} = \MR{\NN}{\phi}\]
 \end{proof}
 
-\begin{prop}[Implication, subset, and inequality]
+\begin{prop}[Subset implies inequality of Morley rank]%/
     \link{implication_subset_inequality}
-    Let $\phi$ and $\psi$ be two $\Si(\MM)$-formulas.
-    Suppose $\MM \model{\Si} \forall v, \psi \to \phi$ 
-    (equivalently $\psi(\MM) \subs \phi(\MM)$),
-    then for any elementary extension $\NN$ of $\MM$
+    Let $\phi$ and $\psi$ be two $\Si(\MM)$-formulas
+    and $\NN$ be an elementary extension of $\MM$.
+    If $\psi(\NN) \subs \phi(\NN)$ then
     \[\MR{\NN}{\psi} \leq \MR{\NN}{\phi}\]
 
     Hence if $X$ is defined by two formulas then the Morley 
     rank of the two formulas in some $\NN$ is the same.
     \[
-        \phi(\MM) = X = \psi(\MM) 
+        \phi(\NN) = X = \psi(\NN) 
         \quad \implies \quad 
         \MR{\NN}{\phi} = \MR{\NN}{\psi}
     \]
 \end{prop}
 \begin{proof}
+    %Note that $\psi(\NN) \subs \phi(\NN)$ (see important footnote\footnote{
+    %    $\psi(\NN) \subs \phi(\NN)$
+    %    is not true when the sets of free variables differ.
+    %    For example if $\psi$ is a sentence then it defines a point but if 
+    %    $\phi$ were $x = x$ then it would define all of $\NN$.)
+    %    }).
     Induct on $\al \in \set{-\infty} \cup \ord$ to show that 
     \[\al \leq \MR{\NN}{\psi} \implies \al \leq \MR{\NN}{\phi}\]
-    
-    The $-\infty$ case is clear as the 
-    empty set is a subset of anything.
+
+    The $-\infty$ case is clear.
     The $0$ case follows from noting that if 
-    $0 \leq \MR{\NN}{\psi}$ then $\nothing \ne \psi(\MM) \subs \phi(\MM)$.
+    $0 \leq \MR{\NN}{\psi}$ then $\nothing \ne \psi(\NN) \subs \phi(\NN)$.
     The non-zero limit case is the same as usual.
     The successor case follows from noting that the
-    $\psi_i$ given for each $i \in \N$ are subsets of $\psi(\MM)$ and 
-    therefore subsets of $\phi(\MM)$.
+    $\psi_i$ given for each $i \in \N$ define subsets of $\psi(\NN)$ and 
+    therefore subsets of $\phi(\NN)$.
 
     Now that we have that it is true for all ordinals the $\infty$ case also
     follows.
+
     The `hence' uses anti-symmetry of the ordering on 
     $\set{-\infty,\infty} \cup \ord$.
 \end{proof}
@@ -969,20 +974,32 @@ For the general version see Proof Wiki \cite{wiki1}.
     By construction each finite restriction lies in $T$.
 \end{proof}
 
+\begin{dfn}[$\al$-minimality]
+    Let $\M$ be an $\om$-saturated $\Si$-structure and $\al$ an ordinal.
+    We say a $\Si(\M)$-formula $\phi$ is $\al$-minimal if 
+    \[\MR{}{\phi} = \al \text{ and there does not exist } 
+    \psi \in \form{\Si(\M)} \text{ such that } 
+    \MR{}{\phi \AND \psi} = \MR{}{\phi \AND \NOT \psi} = \al\]
+\end{dfn}
+
 The following lemma gives us the existence of Morley degree,
 a way to specify how many disjoint subsets of a definable set we can produce.
 \begin{lem}[Morley degree \cite{marker}]
+    \link{morley_degree_lem}
     Let $\M$ be an $\om$-saturated $\Si$-structure.
     Let $\phi$ be a $\Si(\M)$-formula.
     Suppose that $\MR{}{\phi} = \al \in \ord$.
-    Then there exists $d \in \N$ such that if $X_1,\dots,X_n$ are 
+    Then there exist $\al$-minimal formulas $\psi_1,\dots,\psi_d$ 
+    defining disjoint subsets of $\phi(\M)$
+    each with $\MR{}{X_i} = \al$.
+    Futhermore if $X_1,\dots,X_n$ are 
     pairwise disjoint subsets of $\phi(\M)$ 
     each with $\MR{}{X_i} = \al$ then $n \le d$.
 \end{lem}
 \begin{proof}
     We build a binary tree $T \subs 2^{<\om}$ and apply 
     \linkto{konigs_tree}{K\"{o}nig's tree lemma}.
-    Inductively we define for each $n \in \N$ a finite binary tree 
+    Inductively we define for each $n \in \N$ a finite `binary tree' 
     $T_n \subs 2^{\leq n}$ and $\Phi_n : T_n \to \form{\Si(\M)}$
     such that \begin{itemize}
         \item for each $i < n$, $T_{i+1} \cap 2^{\leq i} = T_i$
@@ -994,14 +1011,11 @@ a way to specify how many disjoint subsets of a definable set we can produce.
     By induction, supposing that we have defined $T_i$ and $\Phi_i$ for 
     each $i \leq n$, we define $T_{n+1}$ as
     \begin{align*}
-        T_{n+1} = T_n &\cup \set{t;0 \st t \in T_n \text{ and }
-        \exists \psi \in \form{\Si(\M)}, 
-        \MR{}{\Phi_n(t) \AND \psi} = \MR{}{\Phi_n(t) \AND \NOT \psi} =\al}\\
-        &\cup \set{t;1 \st t \in T_n \text{ and }
-        \exists \psi \in \form{\Si(\M)}, 
-        \MR{}{\Phi_n(t) \AND \psi} = \MR{}{\Phi_n(t) \AND \NOT \psi} =\al}
+        T_{n+1} = T_n &\cup 
+        \set{t;0 \st t \in T_n \text{ is } \al-\text{minimal}}\\
+        &\cup \set{t;1 \st t \in T_n \text{ is } \al-\text{minimal}}
     \end{align*}
-    Then we find using the axiom of choice for each $t;0 \in T_{n+1}$
+    Then we find (using the axiom of choice) for each $t;0 \in T_{n+1}$
     a $\Si(\M)$-formula $\chi_{n+1}$ such that 
     \[
         \MR{}{\Phi_n(t) \AND \chi_{n+1}} = 
@@ -1009,16 +1023,15 @@ a way to specify how many disjoint subsets of a definable set we can produce.
     \]
     We define $\Phi_{n+1}$ such that it agrees upon restriction with $\Phi_n$
     and for each $t \in T_n \cap 2^{n}$,
-    $t;0 \mapsto \Phi_{n+1}(t) \AND \chi_{n+1}$
-    and $t;1 \mapsto \Phi_{n+1}(t) \AND \NOT \chi_{n+1}$.
+    \[t;0 \mapsto \Phi_{n+1}(t) \AND \chi_{n+1}
+    \text{ and } t;1 \mapsto \Phi_{n+1}(t) \AND \NOT \chi_{n+1}\]
     By assumption
     \[\MR{}{\Phi_{n+1}(t;0)} = \MR{}{\Phi_{n}(t) \AND \chi_{n+1}} = \al\]
     Hence $\Phi_{n+1}$ satisfies the conditions we required.
-    
     It then makes sense to define 
     \[  
-        T := \bigcup_{n \in \N} T_n \quad 
-        \Phi : T \to \form{\Si(\M)} := \bigcup_{n \in \N} \Phi_n
+        T := \bigcup_{n \in \N} T_n \quad \text{ and } \quad
+        \Phi := \bigcup_{n \in \N} \Phi_n : T \to \form{\Si(\M)} 
     \]
     $T$ is a binary tree:
     if $s \in T \cap 2^{n}$ and we have $t < s \in T$ then $0 < n$
@@ -1046,7 +1059,6 @@ a way to specify how many disjoint subsets of a definable set we can produce.
         = \brkt{\Phi_n(\res{b}{n}) \AND \NOT \Phi_{n+1}(\res{b}{n+1})}(\M)\\
         &= \brkt{\Phi_n(\res{b}{n}) \AND 
         (\NOT \Phi_{n}(\res{b}{n}) \OR \NOT \chi_{n+1})}(\M)\\
-        &= \brkt{\bot \OR \Phi_n(\res{b}{n}) \AND \NOT \chi_{n+1}}(\M)\\
         &= \brkt{\Phi_n(\res{b}{n}) \AND \NOT \chi_{n+1}}(\M)
     \end{align*}
     \linkto{basic_facts_morley_rank_of_dfnbl_set}{Computing} 
@@ -1077,9 +1089,7 @@ a way to specify how many disjoint subsets of a definable set we can produce.
     Consider $\Phi(N)$, the image of $N$.
     There are three points to note about this: 
     \begin{itemize}
-        \item for $t \in N$ 
-            there is no $\Si(\M)$-formula $\chi$
-            such that $\MR{}{\Phi(t) \AND \chi}$
+        \item For each $t \in N$, $\Phi(t)$ is $\al$-minimal.
         \item The members of $\Phi(N)$ define pairwise disjoint subsets of 
             $\phi(\M)$.
         \item Thus $\phi(\M)$ is equal to a disjoint union
@@ -1156,6 +1166,7 @@ a way to specify how many disjoint subsets of a definable set we can produce.
     if $X_1,\dots,X_n$ are 
     pairwise disjoint subsets of $\phi(\M)$ 
     each with $\MR{}{X_i} = \MR{}{\phi}$ then $n \le d$.
+    The existence of such a $d$ comes from the \link{morley_degree_lem}{lemma}.
     If $\MR{}{\phi} = - \infty$ then $\mdeg(\phi) := -\infty$.
     If $\MR{}{\phi} = \infty$ then $\mdeg(\phi) := \infty$.
 
@@ -1167,7 +1178,8 @@ be natural numbers greater than $0$,
 since the formula itself defines a (trivially pairwise disjoint) subset.
 
 \subsection{Morley rank and degree for types}
-\begin{dfn}
+\begin{dfn}[Morley rank and degree for types]
+    \link{morley_rank_for_types_dfn}
     Let $\MM$ be a $\Si$-structure with $A \subs \MM$.
     Let $p \in S_n(\Theory_\MM(A))$.
     Then we define the Morley rank of $p$ to be 
@@ -1177,7 +1189,8 @@ since the formula itself defines a (trivially pairwise disjoint) subset.
     \linkto{basic_facts_ordinals}{well-ordered}.
 
     Note that for any $p$ (by choice) there exists $\phi \in p$ with exactly $n$ 
-    free variables such that $\MR{}{\phi} = \MR{}{p}$.
+    free variables such that $\MR{}{\phi} = \MR{}{p}$,
+    we call $\phi$ the rank representative.
 
     We also define Morley degree of $p$:
     If $\MR{}{p} = -\infty$ then $\mdeg(p) = -\infty$
@@ -1190,6 +1203,73 @@ since the formula itself defines a (trivially pairwise disjoint) subset.
         \phi \text{ has exactly $n$ free variables}}
     \]
 \end{dfn}
+
+\begin{lem}[Formulas are represented by types \cite{tent}]
+    \link{formulas_rep_by_types}
+    Let $A \subs \M$, where $\M$ is an $\ka$-saturated $\Si$-structure 
+    and $\abs{A} < \M$.
+    If $\phi$ is a $\Si(A)$-formula with $\MR{}{\phi} \in \ord$, 
+    then there exists a type $p \in S_n(\Theory_\M(A))$ such that 
+    $\MR{}{\phi} = \MR{}{p}$ and $\phi \in p$.
+\end{lem}
+\begin{proof}
+    We first show that this holds when $\phi$ is $\al$-minimal,
+    where $\al := \MR{}{\phi}$.
+    We take 
+    \[
+        p := \set{\psi \in \linkto{dfn_types_on_theories}{F(\Si(A),n)} 
+        \st \MR{}{\phi \AND \NOT \psi}} < \al
+    \]
+    as our $n$-type.
+    To show that it is finitely consistent with $\Theory_\M(A)$
+    let $\De$ be a finite subset of $p$,
+    it suffices to show that the conjunction 
+    $\Psi := \bigand{\psi \in \De}{} \psi$
+    has Morley rank at least $\al$.
+    \[
+        \MR{}{\phi \AND \NOT \Psi} = 
+        \MR{}{\bigor{\psi \in \De}{} \phi \AND \NOT \psi} 
+        \linkto{basic_facts_morley_rank_of_dfnbl_set}{=} 
+        \max_{\psi \in \De} (\MR{}{\phi \AND \NOT \psi} ) < \al
+    \]
+    Hence the conjunction $\Phi$ is in $p$.
+    Supposing $\MR{}{\Psi} < \al$ implies
+    $\MR{}{\phi \AND \Psi} < \al$ and 
+    \[
+        \MR{}{\phi} \linkto{basic_facts_morley_rank_of_dfnbl_set}{=} 
+        \max (\MR{}{\phi \AND \Psi}, \MR{}{\phi \AND \NOT \Psi})
+        < \al
+    \]
+    which is a contradiction.
+    Hence $\al \leq \MR{}{\Psi}$ and so $p$ is finitely consistent.
+    To show that it is maximal, suppose $\psi \notin p$. Then 
+    \[\al \leq \MR{}{\phi \AND \NOT \psi} \leq \MR{}{\phi} = \al\]
+    and by $\al$-minimality of $\phi$ we cannot have 
+    $\al \leq \MR{}{\phi \AND \psi}$.
+    Hence $\NOT \psi \in p$.
+
+    Clearly $\phi \in p$, hence $\MR{}{p} \leq \MR{}{\phi}$.
+    Furthermore if $\psi \in p$ then $\al \nleq \MR{}{\phi \AND \NOT \psi}$
+    hence 
+    \[
+        \MR{}{\phi} \linkto{basic_facts_morley_rank_of_dfnbl_set}{=} 
+        \max (\MR{}{\phi \AND \psi}, \MR{}{\phi \AND \NOT \psi})
+        = \MR{}{\phi \AND \psi} \leq \MR{}{\psi}
+    \]
+    hence $\MR{}{p} = \MR{}{\psi}$.
+
+    Now we can do the case without the $\al$-minimal hypothesis.
+    Write $\al \in \ord$ for the Morley rank and 
+    $d \in \N$ the Morley degree of $\phi$.
+    \linkto{morley_degree_lem}{There exist $\al$-minimal formulas}
+    $\psi_1,\dots,\psi_d$ that partition $\phi(\M)$,
+    each with $\MR{}{\psi_i} = \al$.
+    By the first part we have for $\psi_1$ a maximal type 
+    $p \in S_n(\Theory_\M(A))$ such that $\psi_1 \in p$ and 
+    $\MR{}{p} = \MR{}{\psi_1} = \al$.
+    In fact $\phi \in p$ as well since $\psi_1(\M) \subs \phi(\M)$
+    so we have found the type that we required.
+\end{proof}
 
 %? Where to put?
 \subsection{Constructable sets}
